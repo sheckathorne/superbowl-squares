@@ -1,31 +1,49 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simple Webpage</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="min-h-screen bg-gray-100 text-gray-900">
-    <div class="flex flex-col items-center">
-        <!-- Top Label -->
-        <div class="text-xl font-bold">Eagles</div>
-        <div class="flex relative">
-            <!-- Left Label -->
-            <div class="absolute -left-12 top-1/2 translate-y-[100%] text-xl font-bold rotate-[-90deg]">Chiefs</div>
-            <!-- Grid -->
-            <div class="superbowl-grid flex flex-col items-center justify-center">
-                <div class="grid grid-cols-11 gap-1 ml-4">
-
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Superbowl Squares</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+    </head>
+    <body class="min-h-screen bg-gray-100 text-gray-900">
+        <div class="flex flex-col items-center">
+            <form
+                id="add-player-form"
+                class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
+            >
+                <div class="mb-4">
+                    <label
+                        class="block text-gray-700 text-sm font-bold mb-2"
+                        for="player-name"
+                    >
+                        Player Name
+                    </label>
+                    <input
+                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        id="player-name"
+                        name="player-name"
+                        type="text"
+                        placeholder="Player Name"
+                    />
                 </div>
-            </div>
+                <button
+                    class="flex-shrink-0 bg-teal-500 hover:bg-teal-700 border-teal-500 hover:border-teal-700 text-sm border-4 text-white py-1 px-2 rounded"
+                    type="submit"
+                >
+                    Add
+                </button>
+                <button
+                    class="flex-shrink-0 border-transparent border-4 text-teal-500 hover:text-teal-800 text-sm py-1 px-2 rounded"
+                    type="button"
+                >
+                    Cancel
+                </button>
+            </form>
+            <p class="text-center text-gray-500 text-xs">
+                &copy;2020 Acme Corp. All rights reserved.
+            </p>
         </div>
-        <div class="player-list mt-4">
-            <ul>
-                <li>Player 1</li>
-            </ul>
-        </div>
-    </div>
-    <script src="script.js"></script>
-</body>
+        <script src="game-start.js"></script>
+    </body>
 </html>
