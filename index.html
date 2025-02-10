@@ -6,44 +6,79 @@
         <title>Superbowl Squares</title>
         <script src="https://cdn.tailwindcss.com"></script>
     </head>
-    <body class="min-h-screen bg-gray-100 text-gray-900">
-        <div class="flex flex-col items-center">
-            <form
-                id="add-player-form"
-                class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
-            >
-                <div class="mb-4">
-                    <label
-                        class="block text-gray-700 text-sm font-bold mb-2"
-                        for="player-name"
-                    >
-                        Player Name
-                    </label>
-                    <input
-                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                        id="player-name"
-                        name="player-name"
-                        type="text"
-                        placeholder="Player Name"
-                    />
-                </div>
-                <button
-                    class="flex-shrink-0 bg-teal-500 hover:bg-teal-700 border-teal-500 hover:border-teal-700 text-sm border-4 text-white py-1 px-2 rounded"
-                    type="submit"
-                >
-                    Add
-                </button>
-                <button
-                    class="flex-shrink-0 border-transparent border-4 text-teal-500 hover:text-teal-800 text-sm py-1 px-2 rounded"
-                    type="button"
-                >
-                    Cancel
-                </button>
-            </form>
-            <p class="text-center text-gray-500 text-xs">
-                &copy;2020 Acme Corp. All rights reserved.
-            </p>
+    <body class="min-h-screen bg-gray-200">
+
+      <!-- Welcome Box -->
+      <div id="welcome-box" class="flex items-center justify-center min-h-screen p-4">
+        <div class="bg-white rounded-xl shadow-lg p-12 flex flex-col items-center gap-6">
+          <h1 class="text-4xl font-bold text-gray-800">Superbowl Squares</h1>
+          <button id="start-button" class="px-8 py-4 text-white text-xl font-bold bg-green-500 rounded-lg hover:bg-green-600 transition-colors duration-200 shadow-lg">
+            Start
+          </button>
         </div>
-        <script src="game-start.js"></script>
+      </div>
+
+      <!-- The add a player section -->
+      <div class="flex items-center justify-center min-h-screen p-4">
+          <div id="add-player-section" class="w-full max-w-md">
+            <form id="add-player-form" class="bg-white rounded-xl shadow-lg p-12 mb-6">
+                <div class="mb-6">
+              <div class="mb-6">
+                <label class="block text-gray-800 text-lg font-bold mb-3" for="player-name">
+                  Player Name
+                </label>
+                <input
+                  class="w-full px-4 py-3 text-gray-700 bg-gray-50 rounded-lg border border-gray-200 focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-colors duration-200"
+                  id="player-name"
+                  name="player-name"
+                  type="text"
+                  placeholder="Enter player name"
+                />
+              </div>
+              <div class="mb-6">
+              <label class="block text-gray-800 text-lg font-bold mb-3" for="player-name">
+                    Number of Squares
+                </label>
+               <input
+                  class="w-full px-4 py-3 text-gray-700 bg-gray-50 rounded-lg border border-gray-200 focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-colors duration-200"
+                  id="square-count"
+                  name="square-count"
+                  type="number"
+                  max="100"
+                  min="1"
+                  placeholder="Enter square count"
+                />
+              </div>
+              <div class="flex gap-4">
+                <button
+                  type="submit"
+                  class="px-6 py-3 text-white text-lg font-bold bg-green-500 rounded-lg hover:bg-green-600 transition-colors duration-200 shadow-lg"
+                >
+                  Add
+                </button>
+                <button
+                  type="button"
+                  class="px-6 py-3 text-gray-600 text-lg font-bold bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors duration-200"
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+              <div id="players-list" class="mb-4">
+                  <table class="w-full max-w-lg border-collapse">
+                    <tbody id="players-list-table-body">
+
+                    </tbody>
+                  </table>
+              </div>
+            </form>
+            <p class="text-center text-gray-500 text-sm">
+              &copy;2020 Fuxie Industries. All rights reserved.
+            </p>
+          </div>
+        </div>
+
+
+      <script type="module" src="js/script.js"></script>
     </body>
 </html>
