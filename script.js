@@ -202,7 +202,7 @@ function fetchApiData() {
 function initGrid () {
     const gridContainer = document.createElement("div");
     gridContainer.classList.add("grid", "grid-cols-11", "gap-1");
-    document.body.appendChild(gridContainer);
+    document.querySelector(".superbowl-grid").appendChild(gridContainer);
 
     for (let i = -1; i < 10; i++) {
         for (let j = -1; j < 10; j++) {

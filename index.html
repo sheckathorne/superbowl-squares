@@ -6,20 +6,24 @@
     <title>Simple Webpage</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="flex flex-col items-center justify-center min-h-screen bg-gray-100 text-gray-900">
+<body class="min-h-screen bg-gray-100 text-gray-900">
     <div class="flex flex-col items-center">
         <!-- Top Label -->
         <div class="text-xl font-bold">Eagles</div>
-
         <div class="flex relative">
             <!-- Left Label -->
-            <div class="absolute -left-64 top-1/2 translate-y-[900%] text-xl font-bold rotate-[-90deg]">Chiefs</div>
-
+            <div class="absolute -left-12 top-1/2 translate-y-[100%] text-xl font-bold rotate-[-90deg]">Chiefs</div>
             <!-- Grid -->
-            <div class="grid grid-cols-11 gap-1 ml-4">
+            <div class="superbowl-grid flex flex-col items-center justify-center">
+                <div class="grid grid-cols-11 gap-1 ml-4">
+
+                </div>
             </div>
-
-
+        </div>
+        <div class="player-list mt-4">
+            <ul>
+                <li>Player 1</li>
+            </ul>
         </div>
     </div>
     <script src="script.js"></script>
