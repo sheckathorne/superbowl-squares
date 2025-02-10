@@ -1,15 +1,15 @@
 import { colors } from './colors.js';
 
-
 initializeGame();
-initializeData();
 initializeNewPlayerForm();
 
 function initializeGame() {
   if (gameExists()) {
     hideWelcomeShowPlayerForm();
+    createPlayersList(getPlayers())
   } else {
     setStartButtonAction();
+    initializeData();
   }
 }
 
@@ -38,7 +38,6 @@ function initializeData() {
 }
 
 function getPlayers() {
-
   return JSON.parse(localStorage.getItem("players"), function(k, v) {
     return (typeof v === "object" || isNaN(v)) ? v : parseInt(v, 10);
   });
@@ -50,30 +49,64 @@ function addNewPlayer(name, squareCount) {
     return console.log("player already exists");
   } else {
     const playerCount = players.length;
-    players.push({ name: name, color: colors[playerCount], squareCount: squareCount });
+    players.push({ id: playerCount, name: name, color: colors[playerCount], squareCount: squareCount });
     localStorage.setItem("players", JSON.stringify(players));
-    const tableBody = document.getElementById("players-list-table-body")
-    tableBody.innerHTML = ""
-
-    players.forEach(player => {
-      const tableRow = document.createElement("tr")
-      const colorColumn = document.createElement("td")
-      const nameColumn = document.createElement("td")
-      const colorSquare = document.createElement("div")
-
-      colorSquare.classList.add("w-6","h-6","rounded","border","border-gray-200",`bg-[${player.color}]`)
-      colorColumn.classList.add("p-2")
-      nameColumn.classList.add("p-2")
-      colorColumn.appendChild(colorSquare)
-      tableRow.appendChild(colorColumn)
-
-      nameColumn.textContent = `${player.name}`
-      tableRow.appendChild(nameColumn)
-      tableBody.appendChild(tableRow)
-    })
+    createPlayersList(players)
 
   }
   return;
+}
+
+function createPlayersList(players) {
+  const tableBody = document.getElementById("players-list-table-body")
+  tableBody.innerHTML = ""
+  tableBody.innerHTML = "" +
+    "<thead><tr>" +
+    "<th class='p-2 text-center'>Square Color</th>" +
+    "<th class='p-2 text-center'>Name</th>" +
+    "<th class='p-2 text-center'>Square Count</th>" +
+    "<th></th></tr></thead>"
+
+  players.forEach(player => {
+    const tableRow = document.createElement("tr")
+    const colorColumn = document.createElement("td")
+    const nameColumn = document.createElement("td")
+    const squareCountColumn = document.createElement("td")
+    const deleteButtonColumn  = document.createElement("td")
+    const colorSquare = document.createElement("div")
+    const deleteButton = document.createElement("button")
+
+    colorSquare.classList.add("w-6","h-6","mx-auto","rounded","border","border-gray-200",`bg-[${player.color}]`)
+    colorColumn.classList.add("p-2","text-center","align-middle")
+    nameColumn.classList.add("p-2","text-center","align-middle")
+    deleteButtonColumn.classList.add("p-2","text-center","align-middle")
+    squareCountColumn.classList.add("p-2","text-center","align-middle")
+    deleteButton.classList.add("m-2","px-4","py-1","bg-red-500", "text-white", "text-sm", "rounded-md","hover:bg-red-700","focus:outline-none","focus:ring-2","focus:ring-red-400")
+    deleteButton.textContent = "Delete"
+    deleteButton.setAttribute("data-id", player.id)
+
+    deleteButton.addEventListener("click", function(e) {
+      const playerId = parseInt(e.target.getAttribute("data-id"));
+      const players = getPlayers()
+      const filteredPlayers = players.filter(player => player.id !== playerId)
+      console.log(players)
+      console.log(playerId)
+      console.log(filteredPlayers)
+      localStorage.setItem("players", JSON.stringify(filteredPlayers));
+      tableRow.remove();
+    });
+
+    colorColumn.appendChild(colorSquare)
+    tableRow.appendChild(colorColumn)
+    deleteButtonColumn.appendChild(deleteButton)
+
+    nameColumn.textContent = `${player.name}`
+    squareCountColumn.textContent = `${player.squareCount}`
+    tableRow.appendChild(nameColumn)
+    tableRow.appendChild(squareCountColumn)
+    tableRow.appendChild(deleteButton)
+    tableBody.appendChild(tableRow)
+  })
 }
 
 function playerExists(name, players) {
