@@ -1,4 +1,4 @@
-import { colors } from './colors.js';
+import { colors } from "./colors.js";
 
 initializeGame();
 initializeNewPlayerForm();
@@ -6,115 +6,186 @@ initializeNewPlayerForm();
 function initializeGame() {
   if (gameExists()) {
     hideWelcomeShowPlayerForm();
-    createPlayersList(getPlayers())
+    createPlayersTable(getPlayers());
   } else {
     document.getElementById("add-player-parent").style.display = "none";
     setStartButtonAction();
     initializeData();
-
   }
 }
 
 function setStartButtonAction() {
   const startButton = document.getElementById("start-button");
   startButton.addEventListener("click", function () {
-    hideWelcomeShowPlayerForm()
-  })
+    hideWelcomeShowPlayerForm();
+  });
 }
 
 function hideWelcomeShowPlayerForm() {
   const welcomeBox = document.getElementById("welcome-box");
   const addPlayerBox = document.getElementById("add-player-parent");
   welcomeBox.style.display = "none";
-  addPlayerBox.style.display = "block"
+  addPlayerBox.style.display = "block";
 }
 
 function gameExists() {
-    return getPlayers()?.length > 0
+  return getPlayers()?.length > 0;
 }
 
 function initializeData() {
-  if (!getPlayers()) {
+  const players = getPlayers();
+  if (players?.length === 0 || !players) {
+    console.log("initializing game...");
     localStorage.setItem("players", "[]");
+    localStorage.setItem("registeredSquares", "0");
   }
 }
 
 function getPlayers() {
-  return JSON.parse(localStorage.getItem("players"), function(k, v) {
-    return (typeof v === "object" || isNaN(v)) ? v : parseInt(v, 10);
+  return JSON.parse(localStorage.getItem("players"), function (k, v) {
+    return typeof v === "object" || isNaN(v) ? v : parseInt(v, 10);
   });
+}
+
+function getRegisteredSquaresCount() {
+  const registeredSquaresCount = localStorage.getItem("registeredSquares");
+  return parseInt(registeredSquaresCount);
+}
+
+function incrementRegisteredSquares(squareCount) {
+  // Save the square count in local storage
+  const newRegisteredSquareCount = getRegisteredSquaresCount() + squareCount;
+  localStorage.setItem(
+    "registeredSquares",
+    newRegisteredSquareCount.toString(),
+  );
+
+  // Update the 'max' attribute for the form item
+  const squareCountInput = document.getElementById("square-count");
+  squareCountInput.setAttribute("max", 100 - newRegisteredSquareCount);
+}
+
+function setPlayers(players) {
+  localStorage.setItem("players", JSON.stringify(players));
 }
 
 function addNewPlayer(name, squareCount) {
   const players = getPlayers();
+
   if (playerExists(name, players)) {
     return console.log("player already exists");
   } else {
     const playerCount = players.length;
-    players.push({ id: playerCount, name: name, color: colors[playerCount], squareCount: squareCount });
-    localStorage.setItem("players", JSON.stringify(players));
-    createPlayersList(players)
+    const registeredSquares = players.push({
+      id: playerCount,
+      name: name,
+      color: colors[playerCount],
+      squareCount: squareCount,
+    });
 
+    setPlayers(players);
+    incrementRegisteredSquares(squareCount);
+    createPlayersTable(players);
   }
   return;
 }
 
-function createPlayersList(players) {
+function deletePlayer(playerId) {
+  const players = getPlayers();
+  const removedPlayer = players.find((player) => player.id === playerId);
+  const filteredPlayers = players.filter((player) => player.id !== playerId);
+
+  setPlayers(filteredPlayers);
+  incrementRegisteredSquares(-removedPlayer.squareCount);
+}
+
+function createPlayersTable(players) {
   function createTableElement(elementType, classList) {
     const el = document.createElement(elementType);
-    el.classList.add(...classList)
-    return el
+    el.classList.add(...classList);
+    return el;
   }
 
   function createDeleteButton(id, tableRow) {
-    const deleteButtonColumn  = document.createElement("td")
-    const deleteButton = document.createElement("button")
-    deleteButtonColumn.classList.add("p-2","text-center","align-middle")
-    deleteButton.classList.add("m-2","px-4","py-1","bg-red-500", "text-white", "text-sm", "rounded-md","hover:bg-red-700","focus:outline-none","focus:ring-2","focus:ring-red-400")
-    deleteButton.textContent = "Delete"
-    deleteButton.setAttribute("data-id", id)
+    const deleteButtonColumn = document.createElement("td");
+    const deleteButton = document.createElement("button");
+    deleteButtonColumn.classList.add("p-2", "text-center", "align-middle");
+    deleteButton.classList.add(
+      "m-2",
+      "px-4",
+      "py-1",
+      "bg-red-500",
+      "text-white",
+      "text-sm",
+      "rounded-md",
+      "hover:bg-red-700",
+      "focus:outline-none",
+      "focus:ring-2",
+      "focus:ring-red-400",
+    );
+    deleteButton.textContent = "Delete";
+    deleteButton.setAttribute("data-id", id);
 
-    deleteButton.addEventListener("click", function(e) {
+    deleteButton.addEventListener("click", function (e) {
       const playerId = parseInt(e.target.getAttribute("data-id"));
-      const players = getPlayers()
-      const filteredPlayers = players.filter(player => player.id !== playerId)
-      localStorage.setItem("players", JSON.stringify(filteredPlayers));
+      deletePlayer(playerId);
       tableRow.remove();
     });
 
-    deleteButtonColumn.appendChild(deleteButton)
-    return deleteButtonColumn
+    deleteButtonColumn.appendChild(deleteButton);
+    return deleteButtonColumn;
   }
 
-  const tableBody = document.getElementById("players-list-table-body")
-  tableBody.innerHTML = ""
-  tableBody.innerHTML = "" +
+  const tableBody = document.getElementById("players-list-table-body");
+  tableBody.innerHTML = "";
+  tableBody.innerHTML =
+    "" +
     "<thead><tr>" +
     "<th class='p-2 text-left'>Square Color</th>" +
     "<th class='p-2 text-left'>Name</th>" +
     "<th class='p-2 text-center'>Square Count</th>" +
-    "<th></th></tr></thead>"
+    "<th></th></tr></thead>";
 
-  players.forEach(player => {
-    const tableRow = document.createElement("tr")
+  players.forEach((player) => {
+    const tableRow = document.createElement("tr");
 
-    const colorColumn = createTableElement("td", ["p-2", "text-left", "align-middle"]);
-    const nameColumn  = createTableElement("td", ["p-2", "text-left", "align-middle"]);
-    const squareCountColumn = createTableElement("td", ["p-2", "text-center", "align-middle"]);
-    const colorSquare = createTableElement("div", ["w-6","h-6","rounded","border","border-gray-200",`bg-[${player.color}]`]);
+    const colorColumn = createTableElement("td", [
+      "p-2",
+      "text-left",
+      "align-middle",
+    ]);
+    const nameColumn = createTableElement("td", [
+      "p-2",
+      "text-left",
+      "align-middle",
+    ]);
+    const squareCountColumn = createTableElement("td", [
+      "p-2",
+      "text-center",
+      "align-middle",
+    ]);
+    const colorSquare = createTableElement("div", [
+      "w-6",
+      "h-6",
+      "rounded",
+      "border",
+      "border-gray-200",
+      `bg-[${player.color}]`,
+    ]);
     const deleteButtonColumn = createDeleteButton(player.id, tableRow);
 
-    nameColumn.textContent = `${player.name}`
-    squareCountColumn.textContent = `${player.squareCount}`
+    nameColumn.textContent = `${player.name}`;
 
-    colorColumn.appendChild(colorSquare)
-    tableRow.appendChild(colorColumn)
+    squareCountColumn.textContent = `${player.squareCount}`;
 
-    tableRow.appendChild(nameColumn)
-    tableRow.appendChild(squareCountColumn)
-    tableRow.appendChild(deleteButtonColumn)
-    tableBody.appendChild(tableRow)
-  })
+    colorColumn.appendChild(colorSquare);
+    tableRow.appendChild(colorColumn);
+
+    tableRow.appendChild(nameColumn);
+    tableRow.appendChild(squareCountColumn);
+    tableRow.appendChild(deleteButtonColumn);
+    tableBody.appendChild(tableRow);
+  });
 }
 
 function playerExists(name, players) {
@@ -133,206 +204,13 @@ function initializeNewPlayerForm() {
     e.preventDefault();
     const formData = new FormData(form);
     const playerName = formData.get("player-name");
-    const squareCount = formData.get("square-count");
+    const squareCount = parseInt(formData.get("square-count"));
     if (playerName) {
       addNewPlayer(playerName, squareCount);
       form.reset();
     }
   });
 }
-
-// const playersData = [
-//     {
-//         name: "AMD",
-//         color: "#A1C4FC",  // Random color for AMD
-//         numbers: [
-//             [5, 6], [2, 2], [6, 4], [4, 8], [9, 1]
-//         ]
-//     },
-//     {
-//         name: "AP",
-//         color: "#F5A9B8",  // Random color for AP
-//         numbers: [
-//             [8, 0], [9, 2], [6, 7], [9, 9], [3, 1]
-//         ]
-//     },
-//     {
-//         name: "CD",
-//         color: "#FFB6C1",  // Random color for CD
-//         numbers: [
-//             [4, 3], [6, 0]
-//         ]
-//     },
-//     {
-//         name: "DJT",
-//         color: "#C1B7B5",  // Random color for DJT
-//         numbers: [
-//             [8, 6], [2, 3], [3, 7], [4, 4], [6, 9]
-//         ]
-//     },
-//     {
-//         name: "DMO",
-//         color: "#80C9F5",  // Random color for DMO
-//         numbers: [
-//             [8, 3], [0, 2], [7, 5], [0, 1]
-//         ]
-//     },
-//     {
-//         name: "Donna",
-//         color: "#F3A7C5",  // Random color for Donna
-//         numbers: [
-//             [1, 8], [6, 1]
-//         ]
-//     },
-//     {
-//         name: "Ellyott",
-//         color: "#A2D9CE",  // Random color for Ellyott
-//         numbers: [
-//             [2, 7], [1, 5]
-//         ]
-//     },
-//     {
-//         name: "Emily",
-//         color: "#FF7E5F",  // Random color for Emily
-//         numbers: [
-//             [7, 6], [9, 4], [5, 4], [4, 5], [2, 9]
-//         ]
-//     },
-//     {
-//         name: "ETD",
-//         color: "#6B8E23",  // Random color for ETD
-//         numbers: [
-//             [5, 2], [1, 7]
-//         ]
-//     },
-//     {
-//         name: "Hawkeye",
-//         color: "#FFD700",  // Random color for Hawkeye
-//         numbers: [
-//             [3, 3], [8, 8]
-//         ]
-//     },
-//     {
-//         name: "Jay",
-//         color: "#B0E0E6",  // Random color for Jay
-//         numbers: [
-//             [7, 0], [7, 8]
-//         ]
-//     },
-//     {
-//         name: "Kirk",
-//         color: "#9ACD32",  // Random color for Kirk
-//         numbers: [
-//             [3, 0], [4, 7], [7, 4], [9, 5], [1, 1], [5, 1]
-//         ]
-//     },
-//     {
-//         name: "MaryJo",
-//         color: "#FF6347",  // Random color for MaryJo
-//         numbers: [
-//             [6, 3], [9, 0], [1, 9], [0, 8]
-//         ]
-//     },
-//     {
-//         name: "Nis",
-//         color: "#8A2BE2",  // Random color for Nis
-//         numbers: [
-//             [1, 3], [5, 3], [0, 7], [6, 5], [4, 9], [7, 1]
-//         ]
-//     },
-//     {
-//         name: "Otto",
-//         color: "#FF1493",  // Random color for Otto
-//         numbers: [
-//             [0, 3], [7, 7]
-//         ]
-//     },
-//     {
-//         name: "Oz",
-//         color: "#2E8B57",  // Random color for Oz
-//         numbers: [
-//             [8, 2], [6, 2], [9, 8]
-//         ]
-//     },
-//     {
-//         name: "PJ",
-//         color: "#D2691E",  // Random color for PJ
-//         numbers: [
-//             [9, 6], [7, 3], [1, 0], [0, 4], [3, 5], [6, 8]
-//         ]
-//     },
-//     {
-//         name: "Rauls",
-//         color: "#ADFF2F",  // Random color for Rauls
-//         numbers: [
-//             [1, 6], [2, 0], [3, 4], [8, 9], [2, 8], [5, 8]
-//         ]
-//     },
-//     {
-//         name: "Rog",
-//         color: "#D3D3D3",  // Random color for Rog
-//         numbers: [
-//             [8, 4], [7, 9]
-//         ]
-//     },
-//     {
-//         name: "Sal",
-//         color: "#F0E68C",  // Random color for Sal
-//         numbers: [
-//             [0, 6], [8, 7], [5, 7]
-//         ]
-//     },
-//     {
-//         name: "Skin",
-//         color: "#CD5C5C",  // Random color for Skin
-//         numbers: [
-//             [4, 0], [1, 2], [0, 5], [3, 8]
-//         ]
-//     },
-//     {
-//         name: "SOD",
-//         color: "#D8BFD8",  // Random color for SOD
-//         numbers: [
-//             [8, 5], [2, 5]
-//         ]
-//     },
-//     {
-//         name: "Stella",
-//         color: "#FF4500",  // Random color for Stella
-//         numbers: [
-//             [9, 3], [5, 9]
-//         ]
-//     },
-//     {
-//         name: "Steph",
-//         color: "#7FFF00",  // Random color for Steph
-//         numbers: [
-//             [6, 6], [3, 9]
-//         ]
-//     },
-//     {
-//         name: "SV",
-//         color: "#B22222",  // Random color for SV
-//         numbers: [
-//             [4, 6], [3, 6], [0, 0], [4, 2], [7, 2], [1, 4], [2, 4], [5, 5], [8, 1], [2, 1]
-//         ]
-//     },
-//     {
-//         name: "Vick",
-//         color: "#FF8C00",  // Random color for Vick
-//         numbers: [
-//             [3, 2], [0, 9]
-//         ]
-//     },
-//     {
-//         name: "Z",
-//         color: "#00CED1",  // Random color for Z
-//         numbers: [
-//             [2, 6], [5, 0], [9, 7], [4, 1]
-//         ]
-//     }
-// ];
-
 // function fetchApiData() {
 //     fetch('https://api.example.com/data')
 //         .then(response => response.json())
@@ -371,12 +249,9 @@ function initializeNewPlayerForm() {
 //     }
 //   }
 
-
 //   function hasXandY(x, y, numbers) {
 //       return numbers.some(pair => pair[0] === x && pair[1] === y);
 //   }
-
-
 
 // initGrid();
 // createPlayerList(playersData)
