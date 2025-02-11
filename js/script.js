@@ -8,8 +8,10 @@ function initializeGame() {
     hideWelcomeShowPlayerForm();
     createPlayersList(getPlayers())
   } else {
+    document.getElementById("add-player-parent").style.display = "none";
     setStartButtonAction();
     initializeData();
+
   }
 }
 
@@ -22,7 +24,7 @@ function setStartButtonAction() {
 
 function hideWelcomeShowPlayerForm() {
   const welcomeBox = document.getElementById("welcome-box");
-  const addPlayerBox = document.getElementById("add-player-section");
+  const addPlayerBox = document.getElementById("add-player-parent");
   welcomeBox.style.display = "none";
   addPlayerBox.style.display = "block"
 }
@@ -58,53 +60,59 @@ function addNewPlayer(name, squareCount) {
 }
 
 function createPlayersList(players) {
-  const tableBody = document.getElementById("players-list-table-body")
-  tableBody.innerHTML = ""
-  tableBody.innerHTML = "" +
-    "<thead><tr>" +
-    "<th class='p-2 text-center'>Square Color</th>" +
-    "<th class='p-2 text-center'>Name</th>" +
-    "<th class='p-2 text-center'>Square Count</th>" +
-    "<th></th></tr></thead>"
+  function createTableElement(elementType, classList) {
+    const el = document.createElement(elementType);
+    el.classList.add(...classList)
+    return el
+  }
 
-  players.forEach(player => {
-    const tableRow = document.createElement("tr")
-    const colorColumn = document.createElement("td")
-    const nameColumn = document.createElement("td")
-    const squareCountColumn = document.createElement("td")
+  function createDeleteButton(id, tableRow) {
     const deleteButtonColumn  = document.createElement("td")
-    const colorSquare = document.createElement("div")
     const deleteButton = document.createElement("button")
-
-    colorSquare.classList.add("w-6","h-6","mx-auto","rounded","border","border-gray-200",`bg-[${player.color}]`)
-    colorColumn.classList.add("p-2","text-center","align-middle")
-    nameColumn.classList.add("p-2","text-center","align-middle")
     deleteButtonColumn.classList.add("p-2","text-center","align-middle")
-    squareCountColumn.classList.add("p-2","text-center","align-middle")
     deleteButton.classList.add("m-2","px-4","py-1","bg-red-500", "text-white", "text-sm", "rounded-md","hover:bg-red-700","focus:outline-none","focus:ring-2","focus:ring-red-400")
     deleteButton.textContent = "Delete"
-    deleteButton.setAttribute("data-id", player.id)
+    deleteButton.setAttribute("data-id", id)
 
     deleteButton.addEventListener("click", function(e) {
       const playerId = parseInt(e.target.getAttribute("data-id"));
       const players = getPlayers()
       const filteredPlayers = players.filter(player => player.id !== playerId)
-      console.log(players)
-      console.log(playerId)
-      console.log(filteredPlayers)
       localStorage.setItem("players", JSON.stringify(filteredPlayers));
       tableRow.remove();
     });
 
-    colorColumn.appendChild(colorSquare)
-    tableRow.appendChild(colorColumn)
     deleteButtonColumn.appendChild(deleteButton)
+    return deleteButtonColumn
+  }
+
+  const tableBody = document.getElementById("players-list-table-body")
+  tableBody.innerHTML = ""
+  tableBody.innerHTML = "" +
+    "<thead><tr>" +
+    "<th class='p-2 text-left'>Square Color</th>" +
+    "<th class='p-2 text-left'>Name</th>" +
+    "<th class='p-2 text-center'>Square Count</th>" +
+    "<th></th></tr></thead>"
+
+  players.forEach(player => {
+    const tableRow = document.createElement("tr")
+
+    const colorColumn = createTableElement("td", ["p-2", "text-left", "align-middle"]);
+    const nameColumn  = createTableElement("td", ["p-2", "text-left", "align-middle"]);
+    const squareCountColumn = createTableElement("td", ["p-2", "text-center", "align-middle"]);
+    const colorSquare = createTableElement("div", ["w-6","h-6","rounded","border","border-gray-200",`bg-[${player.color}]`]);
+    const deleteButtonColumn = createDeleteButton(player.id, tableRow);
 
     nameColumn.textContent = `${player.name}`
     squareCountColumn.textContent = `${player.squareCount}`
+
+    colorColumn.appendChild(colorSquare)
+    tableRow.appendChild(colorColumn)
+
     tableRow.appendChild(nameColumn)
     tableRow.appendChild(squareCountColumn)
-    tableRow.appendChild(deleteButton)
+    tableRow.appendChild(deleteButtonColumn)
     tableBody.appendChild(tableRow)
   })
 }

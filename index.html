@@ -19,8 +19,9 @@
       </div>
 
       <!-- The add a player section -->
-      <div class="flex items-center justify-center min-h-screen p-4">
-          <div id="add-player-section" class="w-full max-w-md">
+      <div id="add-player-parent">
+      <div id="add-player-section" class="flex items-center justify-center min-h-screen">
+          <div id="add-player-subsection" class="w-full max-w-md">
             <form id="add-player-form" class="bg-white rounded-xl shadow-lg p-12 mb-6">
                 <div class="mb-6">
               <div class="mb-6">
@@ -56,15 +57,10 @@
                 >
                   Add
                 </button>
-                <button
-                  type="button"
-                  class="px-6 py-3 text-gray-600 text-lg font-bold bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors duration-200"
-                >
-                  Cancel
-                </button>
               </div>
             </div>
               <div id="players-list" class="mb-4">
+                  <h1 class="block text-gray-800 text-lg font-bold mb-3">Players Added</h1>
                   <table class="w-full max-w-lg border-collapse">
                     <tbody id="players-list-table-body">
 
@@ -77,8 +73,7 @@
             </p>
           </div>
         </div>
-
-
+      </div>
       <script type="module" src="js/script.js"></script>
     </body>
 </html>
