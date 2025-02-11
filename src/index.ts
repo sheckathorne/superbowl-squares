@@ -1,5 +1,12 @@
 import { colors } from "./colors.js";
 
+interface Player {
+  id: number
+  name: string
+  color: string
+  squareCount: number
+}
+
 initializeGame();
 initializeNewPlayerForm();
 
@@ -8,22 +15,23 @@ function initializeGame() {
     hideWelcomeShowPlayerForm();
     createPlayersTable(getPlayers());
   } else {
-    document.getElementById("add-player-parent").style.display = "none";
+    const playerParent = document.getElementById("add-player-parent") as HTMLElement;
+    playerParent.style.display = "none";
     setStartButtonAction();
     initializeData();
   }
 }
 
 function setStartButtonAction() {
-  const startButton = document.getElementById("start-button");
+  const startButton = document.getElementById("start-button") as HTMLElement;
   startButton.addEventListener("click", function () {
     hideWelcomeShowPlayerForm();
   });
 }
 
 function hideWelcomeShowPlayerForm() {
-  const welcomeBox = document.getElementById("welcome-box");
-  const addPlayerBox = document.getElementById("add-player-parent");
+  const welcomeBox = document.getElementById("welcome-box") as HTMLElement;
+  const addPlayerBox = document.getElementById("add-player-parent") as HTMLElement;
   welcomeBox.style.display = "none";
   addPlayerBox.style.display = "block";
 }
@@ -42,17 +50,18 @@ function initializeData() {
 }
 
 function getPlayers() {
-  return JSON.parse(localStorage.getItem("players"), function (k, v) {
+  const players = localStorage.getItem("players") || "";
+  return JSON.parse(players, function (k, v) {
     return typeof v === "object" || isNaN(v) ? v : parseInt(v, 10);
   });
 }
 
 function getRegisteredSquaresCount() {
-  const registeredSquaresCount = localStorage.getItem("registeredSquares");
+  const registeredSquaresCount = localStorage.getItem("registeredSquares") || "0";
   return parseInt(registeredSquaresCount);
 }
 
-function incrementRegisteredSquares(squareCount) {
+function incrementRegisteredSquares(squareCount: number) {
   // Save the square count in local storage
   const newRegisteredSquareCount = getRegisteredSquaresCount() + squareCount;
   localStorage.setItem(
@@ -61,22 +70,23 @@ function incrementRegisteredSquares(squareCount) {
   );
 
   // Update the 'max' attribute for the form item
-  const squareCountInput = document.getElementById("square-count");
-  squareCountInput.setAttribute("max", 100 - newRegisteredSquareCount);
+  const squareCountInput = document.getElementById("square-count") as HTMLElement;
+  const maxSquareCount = 100 - newRegisteredSquareCount
+  squareCountInput.setAttribute("max", maxSquareCount.toString());
 }
 
-function setPlayers(players) {
+function setPlayers(players: string) {
   localStorage.setItem("players", JSON.stringify(players));
 }
 
-function addNewPlayer(name, squareCount) {
+function addNewPlayer(name: string, squareCount: number) {
   const players = getPlayers();
 
   if (playerExists(name, players)) {
     return console.log("player already exists");
   } else {
     const playerCount = players.length;
-    const registeredSquares = players.push({
+    players.push({
       id: playerCount,
       name: name,
       color: colors[playerCount],
@@ -90,29 +100,29 @@ function addNewPlayer(name, squareCount) {
   return;
 }
 
-function deletePlayer(playerId, tableRow) {
+function deletePlayer(playerId: number, tableRow: HTMLElement) {
   const players = getPlayers();
-  const removedPlayer = players.find((player) => player.id === playerId);
-  const filteredPlayers = players.filter((player) => player.id !== playerId);
+  const removedPlayer = players.find((player: Player) => player.id === playerId);
+  const filteredPlayers = players.filter((player: Player) => player.id !== playerId);
 
   setPlayers(filteredPlayers);
   incrementRegisteredSquares(-removedPlayer.squareCount);
 
   tableRow.remove();
   if (filteredPlayers.length === 0) {
-    const playersList = document.getElementById("players-list");
+    const playersList = document.getElementById("players-list") as HTMLElement;
     playersList.innerHTML = "";
   }
 }
 
-function createPlayersTable(players) {
-  function createTableElement(elementType, classList) {
+function createPlayersTable(players: Player[]) {
+  function createTableElement(elementType: string, classList: string[]) {
     const el = document.createElement(elementType);
     el.classList.add(...classList);
     return el;
   }
 
-  function createDeleteButton(id, tableRow) {
+  function createDeleteButton(id: number, tableRow: HTMLElement) {
     const deleteButtonColumn = document.createElement("td");
     const deleteButton = document.createElement("button");
     deleteButtonColumn.classList.add("p-2", "text-center", "align-middle");
@@ -130,18 +140,23 @@ function createPlayersTable(players) {
       "focus:ring-red-400",
     );
     deleteButton.textContent = "Delete";
-    deleteButton.setAttribute("data-id", id);
+    deleteButton.setAttribute("data-id", id.toString());
 
     deleteButton.addEventListener("click", function (e) {
-      const playerId = parseInt(e.target.getAttribute("data-id"));
-      deletePlayer(playerId, tableRow);
+      const element = e.target as HTMLElement;
+      if (!(element instanceof HTMLButtonElement)) return;
+
+      const playerId = element.getAttribute("data-id");
+      if (!playerId) return;
+
+      deletePlayer(parseInt(playerId), tableRow);
     });
 
     deleteButtonColumn.appendChild(deleteButton);
     return deleteButtonColumn;
   }
 
-  const playersList = document.getElementById("players-list");
+  const playersList = document.getElementById("players-list") as HTMLElement;
 
   playersList.innerHTML =
     "<h1 class='block text-gray-800 text-lg font-bold mb-3'>Players Added</h1>" +
@@ -152,9 +167,9 @@ function createPlayersTable(players) {
     "<th class='p-2 text-center'>Square Count</th>" +
     "<th></th></tr></thead></table>";
 
-  const tableBody = document.getElementById("players-list-table-body");
+  const tableBody = document.getElementById("players-list-table-body") as HTMLElement;
 
-  players.forEach((player) => {
+  players.forEach((player: Player) => {
     const tableRow = document.createElement("tr");
 
     const colorColumn = createTableElement("td", [
@@ -196,9 +211,9 @@ function createPlayersTable(players) {
   });
 }
 
-function playerExists(name, players) {
+function playerExists(name: string, players: Player[]) {
   if (
-    players.find((player) => player.name.toLowerCase() == name.toLowerCase())
+    players.find((player: Player) => player.name.toLowerCase() == name.toLowerCase())
   ) {
     return true;
   } else {
@@ -207,15 +222,15 @@ function playerExists(name, players) {
 }
 
 function initializeNewPlayerForm() {
-  const form = document.querySelector("#add-player-form");
+  const form = document.querySelector("#add-player-form") as HTMLFormElement;
   form.addEventListener("submit", (e) => {
     e.preventDefault();
     const formData = new FormData(form);
-    const playerName = formData.get("player-name");
-    const squareCount = parseInt(formData.get("square-count"));
+    const playerName = String(formData.get("player-name")) || "";
+    const squareCount = parseInt(String(formData.get("square-count")) || "0");
     if (playerName) {
       addNewPlayer(playerName, squareCount);
-      form.reset();
+      // form.reset();
     }
   });
 }
