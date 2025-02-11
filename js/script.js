@@ -90,13 +90,19 @@ function addNewPlayer(name, squareCount) {
   return;
 }
 
-function deletePlayer(playerId) {
+function deletePlayer(playerId, tableRow) {
   const players = getPlayers();
   const removedPlayer = players.find((player) => player.id === playerId);
   const filteredPlayers = players.filter((player) => player.id !== playerId);
 
   setPlayers(filteredPlayers);
   incrementRegisteredSquares(-removedPlayer.squareCount);
+
+  tableRow.remove();
+  if (filteredPlayers.length === 0) {
+    const playersList = document.getElementById("players-list");
+    playersList.innerHTML = "";
+  }
 }
 
 function createPlayersTable(players) {
@@ -128,23 +134,25 @@ function createPlayersTable(players) {
 
     deleteButton.addEventListener("click", function (e) {
       const playerId = parseInt(e.target.getAttribute("data-id"));
-      deletePlayer(playerId);
-      tableRow.remove();
+      deletePlayer(playerId, tableRow);
     });
 
     deleteButtonColumn.appendChild(deleteButton);
     return deleteButtonColumn;
   }
 
-  const tableBody = document.getElementById("players-list-table-body");
-  tableBody.innerHTML = "";
-  tableBody.innerHTML =
-    "" +
+  const playersList = document.getElementById("players-list");
+
+  playersList.innerHTML =
+    "<h1 class='block text-gray-800 text-lg font-bold mb-3'>Players Added</h1>" +
+    "<table class='w-full max-w-lg border-collapse'><tbody id='players-list-table-body'></tbody>" +
     "<thead><tr>" +
     "<th class='p-2 text-left'>Square Color</th>" +
     "<th class='p-2 text-left'>Name</th>" +
     "<th class='p-2 text-center'>Square Count</th>" +
-    "<th></th></tr></thead>";
+    "<th></th></tr></thead></table>";
+
+  const tableBody = document.getElementById("players-list-table-body");
 
   players.forEach((player) => {
     const tableRow = document.createElement("tr");
