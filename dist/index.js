@@ -3,12 +3,11 @@ initializeGame();
 initializeNewPlayerForm();
 function initializeGame() {
     if (gameExists()) {
-        hideWelcomeShowPlayerForm();
+        activateSection("add-player-parent");
         createPlayersTable(getPlayers());
     }
     else {
-        const playerParent = document.getElementById("add-player-parent");
-        playerParent.style.display = "none";
+        activateSection("welcome-box");
         setStartButtonAction();
         initializeData();
     }
@@ -16,14 +15,15 @@ function initializeGame() {
 function setStartButtonAction() {
     const startButton = document.getElementById("start-button");
     startButton.addEventListener("click", function () {
-        hideWelcomeShowPlayerForm();
+        activateSection("add-player-parent");
     });
 }
-function hideWelcomeShowPlayerForm() {
-    const welcomeBox = document.getElementById("welcome-box");
-    const addPlayerBox = document.getElementById("add-player-parent");
-    welcomeBox.style.display = "none";
-    addPlayerBox.style.display = "block";
+function activateSection(sectionId) {
+    const sections = [{ id: "welcome-box", style: "flex" }, { id: "add-player-parent", style: "block" }]; //,"game-board-parent"]
+    sections.forEach(section => {
+        const element = document.getElementById(section.id);
+        element.style.display = section.id === sectionId ? section.style : "none";
+    });
 }
 function gameExists() {
     return getPlayers()?.length > 0;

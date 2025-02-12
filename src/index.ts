@@ -12,11 +12,10 @@ initializeNewPlayerForm();
 
 function initializeGame() {
   if (gameExists()) {
-    hideWelcomeShowPlayerForm();
+    activateSection("add-player-parent");
     createPlayersTable(getPlayers());
   } else {
-    const playerParent = document.getElementById("add-player-parent") as HTMLElement;
-    playerParent.style.display = "none";
+    activateSection("welcome-box")
     setStartButtonAction();
     initializeData();
   }
@@ -25,15 +24,17 @@ function initializeGame() {
 function setStartButtonAction(): void {
   const startButton = document.getElementById("start-button") as HTMLElement;
   startButton.addEventListener("click", function () {
-    hideWelcomeShowPlayerForm();
+    activateSection("add-player-parent");
   });
 }
 
-function hideWelcomeShowPlayerForm(): void {
-  const welcomeBox = document.getElementById("welcome-box") as HTMLElement;
-  const addPlayerBox = document.getElementById("add-player-parent") as HTMLElement;
-  welcomeBox.style.display = "none";
-  addPlayerBox.style.display = "block";
+function activateSection(sectionId: string): void {
+  const sections = [{ id: "welcome-box", style: "flex" }, { id: "add-player-parent", style: "block" }] //,"game-board-parent"]
+
+  sections.forEach(section => {
+    const element = document.getElementById(section.id) as HTMLElement;
+    element.style.display = section.id === sectionId ? section.style : "none";
+  })
 }
 
 function gameExists(): boolean {
