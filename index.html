@@ -47,7 +47,7 @@
                                     Player Name
                                 </label>
                                 <input
-                                    class="w-full px-4 py-3 text-gray-700 bg-gray-50 rounded-lg border border-gray-200 focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-colors duration-200"
+                                    class="w-full px-4 py-3 text-gray-700 bg-gray-50 rounded-lg border border-gray-200 focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-colors duration-200 shadow"
                                     id="player-name"
                                     name="player-name"
                                     type="text"
@@ -62,7 +62,7 @@
                                     Number of Squares
                                 </label>
                                 <input
-                                    class="w-full px-4 py-3 text-gray-700 bg-gray-50 rounded-lg border border-gray-200 focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-colors duration-200"
+                                    class="w-full px-4 py-3 text-gray-700 bg-gray-50 rounded-lg border border-gray-200 focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-colors duration-200 shadow"
                                     id="square-count"
                                     name="square-count"
                                     type="number"
@@ -85,6 +85,28 @@
                     <p class="text-center text-gray-500 text-sm">
                         &copy;2020 Fuxie Industries. All rights reserved.
                     </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Game board -->
+        <div id="game-board-parent">
+            <div class="flex flex-col items-center">
+                <!-- Top Label -->
+                <div class="text-xl font-bold">Eagles</div>
+                <div class="flex relative">
+                    <!-- Left Label -->
+                    <div class="absolute -left-12 top-1/2 translate-y-[100%] text-xl font-bold rotate-[-90deg]">Chiefs</div>
+                    <!-- Grid -->
+                    <div class="superbowl-grid flex flex-col items-center justify-center">
+                        <div class="grid grid-cols-11 gap-1 ml-4">
+                        </div>
+                    </div>
+                </div>
+                <div class="player-list mt-4">
+                    <ul>
+                        <li>Player 1</li>
+                    </ul>
                 </div>
             </div>
         </div>

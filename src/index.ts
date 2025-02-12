@@ -5,6 +5,7 @@ interface Player {
   name: string
   color: string
   squareCount: number
+  squares: [number, number][]
 }
 
 initializeGame();
@@ -29,9 +30,9 @@ function setStartButtonAction(): void {
 }
 
 function activateSection(sectionId: string): void {
-  const sections = [{ id: "welcome-box", style: "flex" }, { id: "add-player-parent", style: "block" }] //,"game-board-parent"]
+  const SECTIONS = [{ id: "welcome-box", style: "flex" }, { id: "add-player-parent", style: "block" }, {id: "game-board-parent", style: "block"}]
 
-  sections.forEach(section => {
+  SECTIONS.forEach(section => {
     const element = document.getElementById(section.id) as HTMLElement;
     element.style.display = section.id === sectionId ? section.style : "none";
   })
@@ -93,6 +94,7 @@ function addNewPlayer(name: string, squareCount: number) {
       name: name,
       color: colors[playerCount],
       squareCount: squareCount,
+      squares: [],
     });
 
     setPlayers(players);
@@ -104,16 +106,14 @@ function addNewPlayer(name: string, squareCount: number) {
 
 function deletePlayer(playerId: number, tableRow: HTMLElement) {
   const players = getPlayers();
-
-  interface Player {
-    id: number
-    name: string
-    color: string
-    squareCount: number
-  }
-
   const removedPlayer = players.find((player: Player) => player.id === playerId);
-  const filteredPlayers = players.filter((player: Player) => player.id !== playerId);
+  const filteredPlayers = players.filter((player: Player) => player.id !== playerId).map((player, i) => {
+    return {
+      ...player,
+      id: i,
+      color: colors[i],
+    }
+  });
   const squareCountIncrement = removedPlayer ? -removedPlayer.squareCount : 0;
 
   setPlayers(filteredPlayers);
@@ -124,6 +124,7 @@ function deletePlayer(playerId: number, tableRow: HTMLElement) {
     const playersList = document.getElementById("players-list") as HTMLElement;
     playersList.innerHTML = "";
   }
+  createPlayersTable(filteredPlayers)
 }
 
 function createPlayersTable(players: Player[]) {
@@ -140,10 +141,10 @@ function createPlayersTable(players: Player[]) {
     deleteButton.classList.add(
       "m-2",
       "px-4",
-      "py-1",
-      "bg-red-500",
+      "py-2",
+      "bg-red-600",
       "text-white",
-      "text-sm",
+      "text-xs",
       "rounded-md",
       "hover:bg-red-700",
       "focus:outline-none",
@@ -175,7 +176,7 @@ function createPlayersTable(players: Player[]) {
     "<thead><tr>" +
     "<th class='p-2 text-left'>Color</th>" +
     "<th class='p-2 text-left'>Name</th>" +
-    "<th class='p-2 text-center'>Square Count</th>" +
+    "<th class='p-2 text-center'>Squares</th>" +
     "<th></th></tr></thead></table>";
 
   const tableBody = document.getElementById("players-list-table-body") as HTMLElement;
@@ -241,10 +242,95 @@ function createStartGameButton(playersList: HTMLElement): void {
   button.textContent = "Begin Game"
   hiddenDiv.textContent = "Once the game begins, random squares will be assigned and no changes will be allowed. Click to continue.";
 
+  button.addEventListener("click", function () {
+    initGrid();
+    activateSection("game-board-parent");
+  })
+
   parentDiv.appendChild(button);
   parentDiv.appendChild(hiddenDiv);
   playersList.appendChild(parentDiv);
 }
+
+function generateUniqueRandomNumbers(squareCount: number, numbers: number[]) {
+  console.log("square count and numbers", squareCount, numbers)
+
+  let results = [];
+  for (let i = 0; i < squareCount; i++) {
+      const randomIndex = Math.floor(Math.random() * numbers.length);
+      const selectedNumber = numbers.splice(randomIndex, 1)[0];
+      results.push(selectedNumber);
+  }
+
+  return [ results, numbers ]
+}
+
+function assignNumbers() {
+  let numbers = [...Array(100).keys()]
+  const players = getPlayers();
+  players.forEach(player => {
+    console.log("the available nubmers are", numbers)
+    let [ results, remainingNumbers ] = generateUniqueRandomNumbers(player.squareCount, numbers)
+    results.forEach(result => {
+      const coordinate = numberToGridCoordinate(result)
+      player.squares.push(coordinate)
+    })
+    numbers = remainingNumbers;
+  })
+  localStorage.setItem("players", JSON.stringify(players))
+}
+
+function numberToGridCoordinate(num: number): [number, number] {
+    if (num < 0 || num > 99) {
+        throw new Error('Number must be between 1 and 100');
+    }
+
+    const row = Math.floor(num / 10);
+    const col = num % 10;
+
+    return [col, row];
+}
+
+function initGrid(): void {
+    assignNumbers();
+
+    const gridContainer = document.createElement("div");
+    gridContainer.classList.add("grid", "grid-cols-11", "gap-1");
+    const grid = document.querySelector(".superbowl-grid") as HTMLElement
+    grid.appendChild(gridContainer);
+
+    for (let i = -1; i < 10; i++) {
+        for (let j = -1; j < 10; j++) {
+            const cell = document.createElement("div");
+            cell.classList.add("w-10", "h-10", "border", "border-gray-400", "flex", "items-center", "justify-center");
+
+          if (i === -1 && j >= 0) {
+            cell.textContent = j.toString();
+            cell.classList.add("font-bold");
+            cell.classList.remove("border");
+          } else if (i === -1 && j === -1) {
+            cell.classList.remove("border");
+          } else if (j === -1 && i >= 0) {
+            cell.textContent = i.toString();
+            cell.classList.add("font-bold");
+            cell.classList.remove("border");
+          } else {
+            const playersData = getPlayers();
+            const player = playersData.find(player => hasXandY(i,j,player.squares))
+            if (player) {
+              cell.classList.add(`bg-[${player.color}]`)
+            }
+            cell.textContent = `${i},${j}`
+          }
+
+            gridContainer.appendChild(cell);
+        }
+    }
+  }
+
+  function hasXandY(x: number, y: number, numbers: [number, number][]): boolean {
+      return numbers.some(pair => pair[0] === x && pair[1] === y);
+  }
 
 function playerExists(name: string, players: Player[]) {
   if (
@@ -282,40 +368,7 @@ function initializeNewPlayerForm() {
 //         .catch(error => console.error('Error fetching API:', error));
 // }
 
-// function initGrid () {
-//     const gridContainer = document.createElement("div");
-//     gridContainer.classList.add("grid", "grid-cols-11", "gap-1");
-//     document.querySelector(".superbowl-grid").appendChild(gridContainer);
 
-//     for (let i = -1; i < 10; i++) {
-//         for (let j = -1; j < 10; j++) {
-//             const cell = document.createElement("div");
-//             cell.classList.add("w-10", "h-10", "border", "border-gray-400", "flex", "items-center", "justify-center");
-
-//           if (i === -1 && j >= 0) {
-//             cell.textContent = j;
-//             cell.classList.add("font-bold");
-//             cell.classList.remove("border");
-//           } else if (i === -1 && j === -1) {
-//             cell.classList.remove("border");
-//           } else if (j === -1 && i >= 0) {
-//             cell.textContent = i;
-//             cell.classList.add("font-bold");
-//             cell.classList.remove("border");
-//           } else {
-//             const player = playersData.find(player => hasXandY(i,j,player.numbers))
-//             cell.classList.add(`bg-[${player.color}]`)
-//             cell.textContent = `${i},${j}`
-//           }
-
-//             gridContainer.appendChild(cell);
-//         }
-//     }
-//   }
-
-//   function hasXandY(x, y, numbers) {
-//       return numbers.some(pair => pair[0] === x && pair[1] === y);
-//   }
 
 // initGrid();
 // createPlayerList(playersData)
