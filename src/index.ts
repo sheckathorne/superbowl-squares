@@ -50,7 +50,7 @@ function initializeData(): void {
 }
 
 function getPlayers(): Player[] {
-  const players = localStorage.getItem("players") || "";
+  const players = localStorage.getItem("players") || "[]";
   return JSON.parse(players, function (k, v) {
     return typeof v === "object" || isNaN(v) ? v : parseInt(v, 10);
   });
@@ -73,6 +73,7 @@ function incrementRegisteredSquares(squareCount: number): void {
   const squareCountInput = document.getElementById("square-count") as HTMLElement;
   const maxSquareCount = 100 - newRegisteredSquareCount
   squareCountInput.setAttribute("max", maxSquareCount.toString());
+  squareCountInput.setAttribute("placeholder", `Enter square count, up to ${maxSquareCount.toString()}`)
 }
 
 function setPlayers(players: Player[]) {
@@ -102,9 +103,17 @@ function addNewPlayer(name: string, squareCount: number) {
 
 function deletePlayer(playerId: number, tableRow: HTMLElement) {
   const players = getPlayers();
+
+  interface Player {
+    id: number
+    name: string
+    color: string
+    squareCount: number
+  }
+
   const removedPlayer = players.find((player: Player) => player.id === playerId);
   const filteredPlayers = players.filter((player: Player) => player.id !== playerId);
-  const squareCountIncrement = -removedPlayer.squareCount || 0
+  const squareCountIncrement = removedPlayer ? -removedPlayer.squareCount : 0;
 
   setPlayers(filteredPlayers);
   incrementRegisteredSquares(squareCountIncrement);
@@ -161,9 +170,9 @@ function createPlayersTable(players: Player[]) {
 
   playersList.innerHTML =
     "<h1 class='block text-gray-800 text-lg font-bold mb-3'>Players Added</h1>" +
-    "<table class='w-full max-w-lg border-collapse'><tbody id='players-list-table-body'></tbody>" +
+    "<table class='w-full max-w-lg border-collapse mb-4'><tbody id='players-list-table-body'></tbody>" +
     "<thead><tr>" +
-    "<th class='p-2 text-left'>Square Color</th>" +
+    "<th class='p-2 text-left'>Color</th>" +
     "<th class='p-2 text-left'>Name</th>" +
     "<th class='p-2 text-center'>Square Count</th>" +
     "<th></th></tr></thead></table>";
@@ -209,7 +218,31 @@ function createPlayersTable(players: Player[]) {
     tableRow.appendChild(squareCountColumn);
     tableRow.appendChild(deleteButtonColumn);
     tableBody.appendChild(tableRow);
+
+
   });
+  createStartGameButton(playersList);
+}
+
+function createStartGameButton(playersList: HTMLElement): void {
+  const button = document.createElement('button');
+  const parentDiv = document.createElement('div');
+  const hiddenDiv = document.createElement('div');
+
+  const buttonClasses = "peer px-6 py-3 text-white text-lg font-bold bg-green-500 rounded-lg hover:bg-green-600 transition-colors duration-200 shadow-lg";
+  const hiddenDivClasses = "hidden peer-hover:block absolute top-full left-0 mt-2 text-xs text-red-500 w-full";
+  const divClasses = "relative";
+
+  button.classList.add(...buttonClasses.split(" "));
+  hiddenDiv.classList.add(...hiddenDivClasses.split(" "));
+  parentDiv.classList.add(...divClasses.split(" "));
+
+  button.textContent = "Begin Game"
+  hiddenDiv.textContent = "Once the game begins, random squares will be assigned and no changes will be allowed. Click to continue.";
+
+  parentDiv.appendChild(button);
+  parentDiv.appendChild(hiddenDiv);
+  playersList.appendChild(parentDiv);
 }
 
 function playerExists(name: string, players: Player[]) {
@@ -222,6 +255,12 @@ function playerExists(name: string, players: Player[]) {
   }
 }
 
+function resetPlayerInputForm(form: HTMLFormElement): void {
+  form.reset();
+  const playerName = document.getElementById("player-name") as HTMLInputElement;
+  playerName.focus()
+}
+
 function initializeNewPlayerForm() {
   const form = document.querySelector("#add-player-form") as HTMLFormElement;
   form.addEventListener("submit", (e) => {
@@ -231,7 +270,7 @@ function initializeNewPlayerForm() {
     const squareCount = parseInt(String(formData.get("square-count")) || "0");
     if (playerName) {
       addNewPlayer(playerName, squareCount);
-      // form.reset();
+      resetPlayerInputForm(form)
     }
   });
 }
