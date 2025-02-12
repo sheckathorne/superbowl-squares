@@ -75,7 +75,7 @@ function incrementRegisteredSquares(squareCount: number): void {
   squareCountInput.setAttribute("max", maxSquareCount.toString());
 }
 
-function setPlayers(players: string) {
+function setPlayers(players: Player[]) {
   localStorage.setItem("players", JSON.stringify(players));
 }
 
@@ -104,9 +104,10 @@ function deletePlayer(playerId: number, tableRow: HTMLElement) {
   const players = getPlayers();
   const removedPlayer = players.find((player: Player) => player.id === playerId);
   const filteredPlayers = players.filter((player: Player) => player.id !== playerId);
+  const squareCountIncrement = -removedPlayer.squareCount || 0
 
   setPlayers(filteredPlayers);
-  incrementRegisteredSquares(-removedPlayer.squareCount);
+  incrementRegisteredSquares(squareCountIncrement);
 
   tableRow.remove();
   if (filteredPlayers.length === 0) {
