@@ -22,25 +22,25 @@ function initializeGame() {
   }
 }
 
-function setStartButtonAction() {
+function setStartButtonAction(): void {
   const startButton = document.getElementById("start-button") as HTMLElement;
   startButton.addEventListener("click", function () {
     hideWelcomeShowPlayerForm();
   });
 }
 
-function hideWelcomeShowPlayerForm() {
+function hideWelcomeShowPlayerForm(): void {
   const welcomeBox = document.getElementById("welcome-box") as HTMLElement;
   const addPlayerBox = document.getElementById("add-player-parent") as HTMLElement;
   welcomeBox.style.display = "none";
   addPlayerBox.style.display = "block";
 }
 
-function gameExists() {
+function gameExists(): boolean {
   return getPlayers()?.length > 0;
 }
 
-function initializeData() {
+function initializeData(): void {
   const players = getPlayers();
   if (players?.length === 0 || !players) {
     console.log("initializing game...");
@@ -49,19 +49,19 @@ function initializeData() {
   }
 }
 
-function getPlayers() {
+function getPlayers(): Player[] {
   const players = localStorage.getItem("players") || "";
   return JSON.parse(players, function (k, v) {
     return typeof v === "object" || isNaN(v) ? v : parseInt(v, 10);
   });
 }
 
-function getRegisteredSquaresCount() {
+function getRegisteredSquaresCount(): number {
   const registeredSquaresCount = localStorage.getItem("registeredSquares") || "0";
   return parseInt(registeredSquaresCount);
 }
 
-function incrementRegisteredSquares(squareCount: number) {
+function incrementRegisteredSquares(squareCount: number): void {
   // Save the square count in local storage
   const newRegisteredSquareCount = getRegisteredSquaresCount() + squareCount;
   localStorage.setItem(
