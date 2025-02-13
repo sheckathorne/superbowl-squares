@@ -4,7 +4,7 @@ initializeNewPlayerForm();
 function initializeGame() {
     if (gameExists()) {
         activateSection("add-player-parent");
-        createPlayersTable(getPlayers());
+        createPlayersTable(getPlayers(), "players-list");
     }
     else {
         activateSection("welcome-box");
@@ -19,8 +19,12 @@ function setStartButtonAction() {
     });
 }
 function activateSection(sectionId) {
-    const SECTIONS = [{ id: "welcome-box", style: "flex" }, { id: "add-player-parent", style: "block" }, { id: "game-board-parent", style: "block" }];
-    SECTIONS.forEach(section => {
+    const SECTIONS = [
+        { id: "welcome-box", style: "flex" },
+        { id: "add-player-parent", style: "block" },
+        { id: "game-board-parent", style: "block" },
+    ];
+    SECTIONS.forEach((section) => {
         const element = document.getElementById(section.id);
         element.style.display = section.id === sectionId ? section.style : "none";
     });
@@ -31,7 +35,6 @@ function gameExists() {
 function initializeData() {
     const players = getPlayers();
     if (players?.length === 0 || !players) {
-        console.log("initializing game...");
         localStorage.setItem("players", "[]");
         localStorage.setItem("registeredSquares", "0");
     }
@@ -75,14 +78,16 @@ function addNewPlayer(name, squareCount) {
         });
         setPlayers(players);
         incrementRegisteredSquares(squareCount);
-        createPlayersTable(players);
+        createPlayersTable(players, "players-list");
     }
     return;
 }
 function deletePlayer(playerId, tableRow) {
     const players = getPlayers();
     const removedPlayer = players.find((player) => player.id === playerId);
-    const filteredPlayers = players.filter((player) => player.id !== playerId).map((player, i) => {
+    const filteredPlayers = players
+        .filter((player) => player.id !== playerId)
+        .map((player, i) => {
         return {
             ...player,
             id: i,
@@ -97,9 +102,9 @@ function deletePlayer(playerId, tableRow) {
         const playersList = document.getElementById("players-list");
         playersList.innerHTML = "";
     }
-    createPlayersTable(filteredPlayers);
+    createPlayersTable(filteredPlayers, "players-list");
 }
-function createPlayersTable(players) {
+function createPlayersTable(players, elementId, forGame = false) {
     function createTableElement(elementType, classList) {
         const el = document.createElement(elementType);
         el.classList.add(...classList);
@@ -124,16 +129,19 @@ function createPlayersTable(players) {
         deleteButtonColumn.appendChild(deleteButton);
         return deleteButtonColumn;
     }
-    const playersList = document.getElementById("players-list");
+    const playersList = document.getElementById(elementId);
+    const title = !forGame
+        ? "<h1 class='block text-gray-800 text-lg font-bold mb-3'>Players Added</h1>"
+        : "";
     playersList.innerHTML =
-        "<h1 class='block text-gray-800 text-lg font-bold mb-3'>Players Added</h1>" +
-            "<table class='w-full max-w-lg border-collapse mb-4'><tbody id='players-list-table-body'></tbody>" +
+        title +
+            "<table class='w-full max-w-lg border-collapse mb-4'><tbody></tbody>" +
             "<thead><tr>" +
             "<th class='p-2 text-left'>Color</th>" +
             "<th class='p-2 text-left'>Name</th>" +
             "<th class='p-2 text-center'>Squares</th>" +
             "<th></th></tr></thead></table>";
-    const tableBody = document.getElementById("players-list-table-body");
+    const tableBody = playersList.getElementsByTagName("tbody")[0];
     players.forEach((player) => {
         const tableRow = document.createElement("tr");
         const colorColumn = createTableElement("td", [
@@ -159,22 +167,27 @@ function createPlayersTable(players) {
             "border-gray-200",
             `bg-[${player.color}]`,
         ]);
-        const deleteButtonColumn = createDeleteButton(player.id, tableRow);
+        // debugger;
         nameColumn.textContent = `${player.name}`;
         squareCountColumn.textContent = `${player.squareCount}`;
         colorColumn.appendChild(colorSquare);
         tableRow.appendChild(colorColumn);
         tableRow.appendChild(nameColumn);
         tableRow.appendChild(squareCountColumn);
-        tableRow.appendChild(deleteButtonColumn);
+        if (!forGame) {
+            const deleteButtonColumn = createDeleteButton(player.id, tableRow);
+            tableRow.appendChild(deleteButtonColumn);
+        }
         tableBody.appendChild(tableRow);
     });
-    createStartGameButton(playersList);
+    if (!forGame) {
+        createStartGameButton(playersList);
+    }
 }
 function createStartGameButton(playersList) {
-    const button = document.createElement('button');
-    const parentDiv = document.createElement('div');
-    const hiddenDiv = document.createElement('div');
+    const button = document.createElement("button");
+    const parentDiv = document.createElement("div");
+    const hiddenDiv = document.createElement("div");
     const buttonClasses = "peer px-6 py-3 text-white text-lg font-bold bg-green-500 rounded-lg hover:bg-green-600 transition-colors duration-200 shadow-lg";
     const hiddenDivClasses = "hidden peer-hover:block absolute top-full left-0 mt-2 text-xs text-red-500 w-full";
     const divClasses = "relative";
@@ -182,7 +195,8 @@ function createStartGameButton(playersList) {
     hiddenDiv.classList.add(...hiddenDivClasses.split(" "));
     parentDiv.classList.add(...divClasses.split(" "));
     button.textContent = "Begin Game";
-    hiddenDiv.textContent = "Once the game begins, random squares will be assigned and no changes will be allowed. Click to continue.";
+    hiddenDiv.textContent =
+        "Once the game begins, random squares will be assigned and no changes will be allowed. Click to continue.";
     button.addEventListener("click", function () {
         initGrid();
         activateSection("game-board-parent");
@@ -192,7 +206,6 @@ function createStartGameButton(playersList) {
     playersList.appendChild(parentDiv);
 }
 function generateUniqueRandomNumbers(squareCount, numbers) {
-    console.log("square count and numbers", squareCount, numbers);
     let results = [];
     for (let i = 0; i < squareCount; i++) {
         const randomIndex = Math.floor(Math.random() * numbers.length);
@@ -204,10 +217,9 @@ function generateUniqueRandomNumbers(squareCount, numbers) {
 function assignNumbers() {
     let numbers = [...Array(100).keys()];
     const players = getPlayers();
-    players.forEach(player => {
-        console.log("the available nubmers are", numbers);
+    players.forEach((player) => {
         let [results, remainingNumbers] = generateUniqueRandomNumbers(player.squareCount, numbers);
-        results.forEach(result => {
+        results.forEach((result) => {
             const coordinate = numberToGridCoordinate(result);
             player.squares.push(coordinate);
         });
@@ -217,7 +229,7 @@ function assignNumbers() {
 }
 function numberToGridCoordinate(num) {
     if (num < 0 || num > 99) {
-        throw new Error('Number must be between 1 and 100');
+        throw new Error("Number must be between 1 and 100");
     }
     const row = Math.floor(num / 10);
     const col = num % 10;
@@ -229,6 +241,7 @@ function initGrid() {
     gridContainer.classList.add("grid", "grid-cols-11", "gap-1");
     const grid = document.querySelector(".superbowl-grid");
     grid.appendChild(gridContainer);
+    const playersData = getPlayers();
     for (let i = -1; i < 10; i++) {
         for (let j = -1; j < 10; j++) {
             const cell = document.createElement("div");
@@ -247,8 +260,7 @@ function initGrid() {
                 cell.classList.remove("border");
             }
             else {
-                const playersData = getPlayers();
-                const player = playersData.find(player => hasXandY(i, j, player.squares));
+                const player = playersData.find((player) => hasXandY(i, j, player.squares));
                 if (player) {
                     cell.classList.add(`bg-[${player.color}]`);
                 }
@@ -257,9 +269,10 @@ function initGrid() {
             gridContainer.appendChild(cell);
         }
     }
+    createPlayersTable(playersData, "game-board-player-list", true);
 }
 function hasXandY(x, y, numbers) {
-    return numbers.some(pair => pair[0] === x && pair[1] === y);
+    return numbers.some((pair) => pair[0] === x && pair[1] === y);
 }
 function playerExists(name, players) {
     if (players.find((player) => player.name.toLowerCase() == name.toLowerCase())) {

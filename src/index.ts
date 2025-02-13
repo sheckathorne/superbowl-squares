@@ -1,11 +1,11 @@
 import { colors } from "./colors.js";
 
 interface Player {
-  id: number
-  name: string
-  color: string
-  squareCount: number
-  squares: [number, number][]
+  id: number;
+  name: string;
+  color: string;
+  squareCount: number;
+  squares: [number, number][];
 }
 
 initializeGame();
@@ -14,9 +14,9 @@ initializeNewPlayerForm();
 function initializeGame() {
   if (gameExists()) {
     activateSection("add-player-parent");
-    createPlayersTable(getPlayers());
+    createPlayersTable(getPlayers(), "players-list");
   } else {
-    activateSection("welcome-box")
+    activateSection("welcome-box");
     setStartButtonAction();
     initializeData();
   }
@@ -30,12 +30,16 @@ function setStartButtonAction(): void {
 }
 
 function activateSection(sectionId: string): void {
-  const SECTIONS = [{ id: "welcome-box", style: "flex" }, { id: "add-player-parent", style: "block" }, {id: "game-board-parent", style: "block"}]
+  const SECTIONS = [
+    { id: "welcome-box", style: "flex" },
+    { id: "add-player-parent", style: "block" },
+    { id: "game-board-parent", style: "block" },
+  ];
 
-  SECTIONS.forEach(section => {
+  SECTIONS.forEach((section) => {
     const element = document.getElementById(section.id) as HTMLElement;
     element.style.display = section.id === sectionId ? section.style : "none";
-  })
+  });
 }
 
 function gameExists(): boolean {
@@ -45,7 +49,6 @@ function gameExists(): boolean {
 function initializeData(): void {
   const players = getPlayers();
   if (players?.length === 0 || !players) {
-    console.log("initializing game...");
     localStorage.setItem("players", "[]");
     localStorage.setItem("registeredSquares", "0");
   }
@@ -59,7 +62,8 @@ function getPlayers(): Player[] {
 }
 
 function getRegisteredSquaresCount(): number {
-  const registeredSquaresCount = localStorage.getItem("registeredSquares") || "0";
+  const registeredSquaresCount =
+    localStorage.getItem("registeredSquares") || "0";
   return parseInt(registeredSquaresCount);
 }
 
@@ -72,10 +76,15 @@ function incrementRegisteredSquares(squareCount: number): void {
   );
 
   // Update the 'max' attribute for the form item
-  const squareCountInput = document.getElementById("square-count") as HTMLElement;
-  const maxSquareCount = 100 - newRegisteredSquareCount
+  const squareCountInput = document.getElementById(
+    "square-count",
+  ) as HTMLElement;
+  const maxSquareCount = 100 - newRegisteredSquareCount;
   squareCountInput.setAttribute("max", maxSquareCount.toString());
-  squareCountInput.setAttribute("placeholder", `Enter square count, up to ${maxSquareCount.toString()}`)
+  squareCountInput.setAttribute(
+    "placeholder",
+    `Enter square count, up to ${maxSquareCount.toString()}`,
+  );
 }
 
 function setPlayers(players: Player[]) {
@@ -99,21 +108,25 @@ function addNewPlayer(name: string, squareCount: number) {
 
     setPlayers(players);
     incrementRegisteredSquares(squareCount);
-    createPlayersTable(players);
+    createPlayersTable(players, "players-list");
   }
   return;
 }
 
 function deletePlayer(playerId: number, tableRow: HTMLElement) {
   const players = getPlayers();
-  const removedPlayer = players.find((player: Player) => player.id === playerId);
-  const filteredPlayers = players.filter((player: Player) => player.id !== playerId).map((player, i) => {
-    return {
-      ...player,
-      id: i,
-      color: colors[i],
-    }
-  });
+  const removedPlayer = players.find(
+    (player: Player) => player.id === playerId,
+  );
+  const filteredPlayers = players
+    .filter((player: Player) => player.id !== playerId)
+    .map((player, i) => {
+      return {
+        ...player,
+        id: i,
+        color: colors[i],
+      };
+    });
   const squareCountIncrement = removedPlayer ? -removedPlayer.squareCount : 0;
 
   setPlayers(filteredPlayers);
@@ -124,10 +137,14 @@ function deletePlayer(playerId: number, tableRow: HTMLElement) {
     const playersList = document.getElementById("players-list") as HTMLElement;
     playersList.innerHTML = "";
   }
-  createPlayersTable(filteredPlayers)
+  createPlayersTable(filteredPlayers, "players-list");
 }
 
-function createPlayersTable(players: Player[]) {
+function createPlayersTable(
+  players: Player[],
+  elementId: string,
+  forGame = false,
+) {
   function createTableElement(elementType: string, classList: string[]) {
     const el = document.createElement(elementType);
     el.classList.add(...classList);
@@ -168,18 +185,21 @@ function createPlayersTable(players: Player[]) {
     return deleteButtonColumn;
   }
 
-  const playersList = document.getElementById("players-list") as HTMLElement;
+  const playersList = document.getElementById(elementId) as HTMLElement;
+  const title = !forGame
+    ? "<h1 class='block text-gray-800 text-lg font-bold mb-3'>Players Added</h1>"
+    : "";
 
   playersList.innerHTML =
-    "<h1 class='block text-gray-800 text-lg font-bold mb-3'>Players Added</h1>" +
-    "<table class='w-full max-w-lg border-collapse mb-4'><tbody id='players-list-table-body'></tbody>" +
+    title +
+    "<table class='w-full max-w-lg border-collapse mb-4'><tbody></tbody>" +
     "<thead><tr>" +
     "<th class='p-2 text-left'>Color</th>" +
     "<th class='p-2 text-left'>Name</th>" +
     "<th class='p-2 text-center'>Squares</th>" +
     "<th></th></tr></thead></table>";
 
-  const tableBody = document.getElementById("players-list-table-body") as HTMLElement;
+  const tableBody = playersList.getElementsByTagName("tbody")[0] as HTMLElement;
 
   players.forEach((player: Player) => {
     const tableRow = document.createElement("tr");
@@ -207,45 +227,50 @@ function createPlayersTable(players: Player[]) {
       "border-gray-200",
       `bg-[${player.color}]`,
     ]);
-    const deleteButtonColumn = createDeleteButton(player.id, tableRow);
 
+    // debugger;
     nameColumn.textContent = `${player.name}`;
 
     squareCountColumn.textContent = `${player.squareCount}`;
 
     colorColumn.appendChild(colorSquare);
     tableRow.appendChild(colorColumn);
-
     tableRow.appendChild(nameColumn);
     tableRow.appendChild(squareCountColumn);
-    tableRow.appendChild(deleteButtonColumn);
+    if (!forGame) {
+      const deleteButtonColumn = createDeleteButton(player.id, tableRow);
+      tableRow.appendChild(deleteButtonColumn);
+    }
     tableBody.appendChild(tableRow);
-
-
   });
-  createStartGameButton(playersList);
+  if (!forGame) {
+    createStartGameButton(playersList);
+  }
 }
 
 function createStartGameButton(playersList: HTMLElement): void {
-  const button = document.createElement('button');
-  const parentDiv = document.createElement('div');
-  const hiddenDiv = document.createElement('div');
+  const button = document.createElement("button");
+  const parentDiv = document.createElement("div");
+  const hiddenDiv = document.createElement("div");
 
-  const buttonClasses = "peer px-6 py-3 text-white text-lg font-bold bg-green-500 rounded-lg hover:bg-green-600 transition-colors duration-200 shadow-lg";
-  const hiddenDivClasses = "hidden peer-hover:block absolute top-full left-0 mt-2 text-xs text-red-500 w-full";
+  const buttonClasses =
+    "peer px-6 py-3 text-white text-lg font-bold bg-green-500 rounded-lg hover:bg-green-600 transition-colors duration-200 shadow-lg";
+  const hiddenDivClasses =
+    "hidden peer-hover:block absolute top-full left-0 mt-2 text-xs text-red-500 w-full";
   const divClasses = "relative";
 
   button.classList.add(...buttonClasses.split(" "));
   hiddenDiv.classList.add(...hiddenDivClasses.split(" "));
   parentDiv.classList.add(...divClasses.split(" "));
 
-  button.textContent = "Begin Game"
-  hiddenDiv.textContent = "Once the game begins, random squares will be assigned and no changes will be allowed. Click to continue.";
+  button.textContent = "Begin Game";
+  hiddenDiv.textContent =
+    "Once the game begins, random squares will be assigned and no changes will be allowed. Click to continue.";
 
   button.addEventListener("click", function () {
     initGrid();
     activateSection("game-board-parent");
-  })
+  });
 
   parentDiv.appendChild(button);
   parentDiv.appendChild(hiddenDiv);
@@ -253,88 +278,102 @@ function createStartGameButton(playersList: HTMLElement): void {
 }
 
 function generateUniqueRandomNumbers(squareCount: number, numbers: number[]) {
-  console.log("square count and numbers", squareCount, numbers)
-
   let results = [];
   for (let i = 0; i < squareCount; i++) {
-      const randomIndex = Math.floor(Math.random() * numbers.length);
-      const selectedNumber = numbers.splice(randomIndex, 1)[0];
-      results.push(selectedNumber);
+    const randomIndex = Math.floor(Math.random() * numbers.length);
+    const selectedNumber = numbers.splice(randomIndex, 1)[0];
+    results.push(selectedNumber);
   }
 
-  return [ results, numbers ]
+  return [results, numbers];
 }
 
 function assignNumbers() {
-  let numbers = [...Array(100).keys()]
+  let numbers = [...Array(100).keys()];
   const players = getPlayers();
-  players.forEach(player => {
-    console.log("the available nubmers are", numbers)
-    let [ results, remainingNumbers ] = generateUniqueRandomNumbers(player.squareCount, numbers)
-    results.forEach(result => {
-      const coordinate = numberToGridCoordinate(result)
-      player.squares.push(coordinate)
-    })
+  players.forEach((player) => {
+    let [results, remainingNumbers] = generateUniqueRandomNumbers(
+      player.squareCount,
+      numbers,
+    );
+    results.forEach((result) => {
+      const coordinate = numberToGridCoordinate(result);
+      player.squares.push(coordinate);
+    });
     numbers = remainingNumbers;
-  })
-  localStorage.setItem("players", JSON.stringify(players))
+  });
+  localStorage.setItem("players", JSON.stringify(players));
 }
 
 function numberToGridCoordinate(num: number): [number, number] {
-    if (num < 0 || num > 99) {
-        throw new Error('Number must be between 1 and 100');
-    }
+  if (num < 0 || num > 99) {
+    throw new Error("Number must be between 1 and 100");
+  }
 
-    const row = Math.floor(num / 10);
-    const col = num % 10;
+  const row = Math.floor(num / 10);
+  const col = num % 10;
 
-    return [col, row];
+  return [col, row];
 }
 
 function initGrid(): void {
-    assignNumbers();
+  assignNumbers();
 
-    const gridContainer = document.createElement("div");
-    gridContainer.classList.add("grid", "grid-cols-11", "gap-1");
-    const grid = document.querySelector(".superbowl-grid") as HTMLElement
-    grid.appendChild(gridContainer);
+  const gridContainer = document.createElement("div");
+  gridContainer.classList.add("grid", "grid-cols-11", "gap-1");
+  const grid = document.querySelector(".superbowl-grid") as HTMLElement;
+  grid.appendChild(gridContainer);
+  const playersData = getPlayers();
 
-    for (let i = -1; i < 10; i++) {
-        for (let j = -1; j < 10; j++) {
-            const cell = document.createElement("div");
-            cell.classList.add("w-10", "h-10", "border", "border-gray-400", "flex", "items-center", "justify-center");
+  for (let i = -1; i < 10; i++) {
+    for (let j = -1; j < 10; j++) {
+      const cell = document.createElement("div");
+      cell.classList.add(
+        "w-10",
+        "h-10",
+        "border",
+        "border-gray-400",
+        "flex",
+        "items-center",
+        "justify-center",
+      );
 
-          if (i === -1 && j >= 0) {
-            cell.textContent = j.toString();
-            cell.classList.add("font-bold");
-            cell.classList.remove("border");
-          } else if (i === -1 && j === -1) {
-            cell.classList.remove("border");
-          } else if (j === -1 && i >= 0) {
-            cell.textContent = i.toString();
-            cell.classList.add("font-bold");
-            cell.classList.remove("border");
-          } else {
-            const playersData = getPlayers();
-            const player = playersData.find(player => hasXandY(i,j,player.squares))
-            if (player) {
-              cell.classList.add(`bg-[${player.color}]`)
-            }
-            cell.textContent = `${i},${j}`
-          }
-
-            gridContainer.appendChild(cell);
+      if (i === -1 && j >= 0) {
+        cell.textContent = j.toString();
+        cell.classList.add("font-bold");
+        cell.classList.remove("border");
+      } else if (i === -1 && j === -1) {
+        cell.classList.remove("border");
+      } else if (j === -1 && i >= 0) {
+        cell.textContent = i.toString();
+        cell.classList.add("font-bold");
+        cell.classList.remove("border");
+      } else {
+        const player = playersData.find((player) =>
+          hasXandY(i, j, player.squares),
+        );
+        if (player) {
+          cell.classList.add(`bg-[${player.color}]`);
         }
+        cell.textContent = `${i},${j}`;
+      }
+
+      gridContainer.appendChild(cell);
     }
   }
 
-  function hasXandY(x: number, y: number, numbers: [number, number][]): boolean {
-      return numbers.some(pair => pair[0] === x && pair[1] === y);
-  }
+  createPlayersTable(playersData, "game-board-player-list", true);
+}
+
+function hasXandY(x: number, y: number, numbers: [number, number][]): boolean {
+  return numbers.some((pair) => pair[0] === x && pair[1] === y);
+}
 
 function playerExists(name: string, players: Player[]) {
   if (
-    players.find((player: Player) => player.name.toLowerCase() == name.toLowerCase())
+    players.find(
+      (player: Player) => player.name.toLowerCase() == name.toLowerCase(),
+    )
   ) {
     return true;
   } else {
@@ -345,7 +384,7 @@ function playerExists(name: string, players: Player[]) {
 function resetPlayerInputForm(form: HTMLFormElement): void {
   form.reset();
   const playerName = document.getElementById("player-name") as HTMLInputElement;
-  playerName.focus()
+  playerName.focus();
 }
 
 function initializeNewPlayerForm() {
@@ -357,7 +396,7 @@ function initializeNewPlayerForm() {
     const squareCount = parseInt(String(formData.get("square-count")) || "0");
     if (playerName) {
       addNewPlayer(playerName, squareCount);
-      resetPlayerInputForm(form)
+      resetPlayerInputForm(form);
     }
   });
 }
@@ -367,8 +406,6 @@ function initializeNewPlayerForm() {
 //         .then(data => console.log('API Data:', data))
 //         .catch(error => console.error('Error fetching API:', error));
 // }
-
-
 
 // initGrid();
 // createPlayerList(playersData)
