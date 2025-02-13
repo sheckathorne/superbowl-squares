@@ -223,7 +223,7 @@ function createPlayersTable(
           const sq = document.getElementById(
             JSON.stringify(square),
           ) as HTMLElement;
-          const sqClasses = "border-4 border-blue-400";
+          const sqClasses = "border-4 border-red-400";
           sq.classList.remove(...sqClasses.split(" "));
         });
       });
@@ -376,8 +376,12 @@ function initGrid(): void {
           hasXandY(i, j, player.squares),
         );
 
-        cell.textContent = `${i},${j}`;
         cell.id = `[${i},${j}]`;
+
+        if (player) {
+          cell.classList.add(`bg-[${player.color}]`);
+          cell.textContent = `${player.name.substring(0, 1)}`;
+        }
       }
       gridContainer.appendChild(cell);
     }
