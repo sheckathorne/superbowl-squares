@@ -1,6 +1,8 @@
 {
   "dependencies": {
-    "live-server": "^1.2.2"
+    "@tailwindcss/cli": "^4.0.6",
+    "live-server": "^1.2.2",
+    "tailwindcss": "^4.0.6"
   },
   "devDependencies": {
     "@types/node": "^22.13.1",

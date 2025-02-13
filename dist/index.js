@@ -144,6 +144,24 @@ function createPlayersTable(players, elementId, forGame = false) {
     const tableBody = playersList.getElementsByTagName("tbody")[0];
     players.forEach((player) => {
         const tableRow = document.createElement("tr");
+        if (forGame) {
+            const tableRowClasses = `hover:bg-blue-50 cursor-pointer`;
+            tableRow.classList.add(...tableRowClasses.split(" "));
+            tableRow.addEventListener("mouseover", function () {
+                player.squares.forEach((square) => {
+                    const sq = document.getElementById(JSON.stringify(square));
+                    const sqClasses = "border-4 border-red-400";
+                    sq.classList.add(...sqClasses.split(" "));
+                });
+            });
+            tableRow.addEventListener("mouseleave", function () {
+                player.squares.forEach((square) => {
+                    const sq = document.getElementById(JSON.stringify(square));
+                    const sqClasses = "border-4 border-blue-400";
+                    sq.classList.remove(...sqClasses.split(" "));
+                });
+            });
+        }
         const colorColumn = createTableElement("td", [
             "p-2",
             "text-left",
@@ -167,7 +185,6 @@ function createPlayersTable(players, elementId, forGame = false) {
             "border-gray-200",
             `bg-[${player.color}]`,
         ]);
-        // debugger;
         nameColumn.textContent = `${player.name}`;
         squareCountColumn.textContent = `${player.squareCount}`;
         colorColumn.appendChild(colorSquare);
@@ -261,10 +278,8 @@ function initGrid() {
             }
             else {
                 const player = playersData.find((player) => hasXandY(i, j, player.squares));
-                if (player) {
-                    cell.classList.add(`bg-[${player.color}]`);
-                }
                 cell.textContent = `${i},${j}`;
+                cell.id = `[${i},${j}]`;
             }
             gridContainer.appendChild(cell);
         }
