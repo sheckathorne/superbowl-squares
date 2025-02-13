@@ -84,3 +84,5 @@ export const colors = [
   "#C71585",
   "#F4A460",
 ];
+
+// bg-[#FF0000],bg-[#00FF00],bg-[#0000FF],bg-[#FFFF00],bg-[#FF00FF],bg-[#00FFFF],bg-[#FFA500],bg-[#FF4500],bg-[#1E90FF],bg-[#32CD32],bg-[#DC143C],bg-[#FF69B4],bg-[#4B0082],bg-[#20B2AA],bg-[#DAA520],bg-[#2E8B57],bg-[#A0522D],bg-[#C71585],bg-[#F4A460],bg-[#7B68EE],bg-[#D2691E],bg-[#FF7F50],bg-[#6495ED],bg-[#7FFF00],bg-[#FF6347],bg-[#40E0D0],bg-[#EE82EE],bg-[#F0E68C],bg-[#FF1493],bg-[#00BFFF],bg-[#CD5C5C],bg-[#4169E1],bg-[#FA8072],bg-[#FF8C00],bg-[#00FF7F],bg-[#DB7093],bg-[#00FA9A],bg-[#F5DEB3],bg-[#87CEEB],bg-[#00FF5F],bg-[#32CD32],bg-[#DC143C],bg-[#FF69B4],bg-[#4B0082],bg-[#20B2AA],bg-[#DAA520],bg-[#2E8B57],bg-[#A0522D],bg-[#C71585],bg-[#F4A460],bg-[#7B68EE],bg-[#D2691E],bg-[#FF7F50],bg-[#6495ED],bg-[#7FFF00],bg-[#FF6347],bg-[#40E0D0],bg-[#EE82EE],bg-[#F0E68C],bg-[#FF1493],bg-[#00BFFF],bg-[#CD5C5C],bg-[#4169E1],bg-[#FA8072],bg-[#FF8C00],bg-[#00FF7F],bg-[#DB7093],bg-[#00FA9A],bg-[#F5DEB3],bg-[#87CEEB],bg-[#00FF5F],bg-[#FF4500],bg-[#00CED1],bg-[#1E90FF],bg-[#32CD32],bg-[#DC143C],bg-[#FF69B4],bg-[#4B0082],bg-[#20B2AA],bg-[#DAA520],bg-[#2E8B57],bg-[#A0522D],bg-[#C71585],bg-[#F4A460]
