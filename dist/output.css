@@ -518,6 +518,9 @@
   }
 }
 @layer utilities {
+  .collapse {
+    visibility: collapse;
+  }
   .absolute {
     position: absolute;
   }
@@ -526,6 +529,9 @@
   }
   .relative {
     position: relative;
+  }
+  .top-1 {
+    top: calc(var(--spacing) * 1);
   }
   .top-1\/2 {
     top: calc(1/2 * 100%);
@@ -578,6 +584,12 @@
   .hidden {
     display: none;
   }
+  .inline-flex {
+    display: inline-flex;
+  }
+  .list-item {
+    display: list-item;
+  }
   .table {
     display: table;
   }
@@ -605,6 +617,9 @@
   .max-w-md {
     max-width: var(--container-md);
   }
+  .flex-shrink {
+    flex-shrink: 1;
+  }
   .flex-shrink-0 {
     flex-shrink: 0;
   }
@@ -618,8 +633,14 @@
   .rotate-\[-90deg\] {
     rotate: -90deg;
   }
+  .transform {
+    transform: var(--tw-rotate-x) var(--tw-rotate-y) var(--tw-rotate-z) var(--tw-skew-x) var(--tw-skew-y);
+  }
   .cursor-pointer {
     cursor: pointer;
+  }
+  .resize {
+    resize: both;
   }
   .appearance-none {
     appearance: none;
@@ -665,6 +686,9 @@
     border-style: var(--tw-border-style);
     border-width: 4px;
   }
+  .border-black {
+    border-color: var(--color-black);
+  }
   .border-blue-400 {
     border-color: var(--color-blue-400);
   }
@@ -673,6 +697,9 @@
   }
   .border-gray-400 {
     border-color: var(--color-gray-400);
+  }
+  .border-gray-900 {
+    border-color: var(--color-gray-900);
   }
   .border-red-400 {
     border-color: var(--color-red-400);
@@ -683,128 +710,386 @@
   .border-transparent {
     border-color: transparent;
   }
+  .bg-\[\#0000FF99\] {
+    background-color: #0000FF99;
+  }
+  .bg-\[\#0000FFBF\] {
+    background-color: #0000FFBF;
+  }
   .bg-\[\#0000FF\] {
     background-color: #0000FF;
+  }
+  .bg-\[\#00BFFF99\] {
+    background-color: #00BFFF99;
+  }
+  .bg-\[\#00BFFFBF\] {
+    background-color: #00BFFFBF;
   }
   .bg-\[\#00BFFF\] {
     background-color: #00BFFF;
   }
+  .bg-\[\#00CED199\] {
+    background-color: #00CED199;
+  }
+  .bg-\[\#00CED1BF\] {
+    background-color: #00CED1BF;
+  }
   .bg-\[\#00CED1\] {
     background-color: #00CED1;
+  }
+  .bg-\[\#00FA9A99\] {
+    background-color: #00FA9A99;
+  }
+  .bg-\[\#00FA9ABF\] {
+    background-color: #00FA9ABF;
   }
   .bg-\[\#00FA9A\] {
     background-color: #00FA9A;
   }
+  .bg-\[\#00FF00BF\] {
+    background-color: #00FF00BF;
+  }
   .bg-\[\#00FF00\] {
     background-color: #00FF00;
+  }
+  .bg-\[\#00FF5F99\] {
+    background-color: #00FF5F99;
+  }
+  .bg-\[\#00FF5FBF\] {
+    background-color: #00FF5FBF;
   }
   .bg-\[\#00FF5F\] {
     background-color: #00FF5F;
   }
+  .bg-\[\#00FF7F99\] {
+    background-color: #00FF7F99;
+  }
+  .bg-\[\#00FF7FBF\] {
+    background-color: #00FF7FBF;
+  }
   .bg-\[\#00FF7F\] {
     background-color: #00FF7F;
+  }
+  .bg-\[\#00FF0099\] {
+    background-color: #00FF0099;
+  }
+  .bg-\[\#00FFFF99\] {
+    background-color: #00FFFF99;
+  }
+  .bg-\[\#00FFFFBF\] {
+    background-color: #00FFFFBF;
   }
   .bg-\[\#00FFFF\] {
     background-color: #00FFFF;
   }
+  .bg-\[\#1E90FF99\] {
+    background-color: #1E90FF99;
+  }
+  .bg-\[\#1E90FFBF\] {
+    background-color: #1E90FFBF;
+  }
   .bg-\[\#1E90FF\] {
     background-color: #1E90FF;
   }
-  .bg-\[\#20B2AA\] {
-    background-color: #20B2AA;
+  .bg-\[\#4B008299\] {
+    background-color: #4B008299;
   }
-  .bg-\[\#2E8B57\] {
-    background-color: #2E8B57;
-  }
-  .bg-\[\#7B68EE\] {
-    background-color: #7B68EE;
-  }
-  .bg-\[\#7FFF00\] {
-    background-color: #7FFF00;
-  }
-  .bg-\[\#32CD32\] {
-    background-color: #32CD32;
-  }
-  .bg-\[\#40E0D0\] {
-    background-color: #40E0D0;
-  }
-  .bg-\[\#87CEEB\] {
-    background-color: #87CEEB;
-  }
-  .bg-\[\#4169E1\] {
-    background-color: #4169E1;
+  .bg-\[\#4B0082BF\] {
+    background-color: #4B0082BF;
   }
   .bg-\[\#4B0082\] {
     background-color: #4B0082;
   }
+  .bg-\[\#7B68EEBF\] {
+    background-color: #7B68EEBF;
+  }
+  .bg-\[\#7B68EE\] {
+    background-color: #7B68EE;
+  }
+  .bg-\[\#7FFF00BF\] {
+    background-color: #7FFF00BF;
+  }
+  .bg-\[\#7FFF00\] {
+    background-color: #7FFF00;
+  }
+  .bg-\[\#20B2AA99\] {
+    background-color: #20B2AA99;
+  }
+  .bg-\[\#20B2AABF\] {
+    background-color: #20B2AABF;
+  }
+  .bg-\[\#20B2AA\] {
+    background-color: #20B2AA;
+  }
+  .bg-\[\#2E8B5799\] {
+    background-color: #2E8B5799;
+  }
+  .bg-\[\#2E8B57BF\] {
+    background-color: #2E8B57BF;
+  }
+  .bg-\[\#2E8B57\] {
+    background-color: #2E8B57;
+  }
+  .bg-\[\#7B68EE99\] {
+    background-color: #7B68EE99;
+  }
+  .bg-\[\#7FFF0099\] {
+    background-color: #7FFF0099;
+  }
+  .bg-\[\#32CD3299\] {
+    background-color: #32CD3299;
+  }
+  .bg-\[\#32CD32BF\] {
+    background-color: #32CD32BF;
+  }
+  .bg-\[\#32CD32\] {
+    background-color: #32CD32;
+  }
+  .bg-\[\#40E0D099\] {
+    background-color: #40E0D099;
+  }
+  .bg-\[\#40E0D0BF\] {
+    background-color: #40E0D0BF;
+  }
+  .bg-\[\#40E0D0\] {
+    background-color: #40E0D0;
+  }
+  .bg-\[\#87CEEB99\] {
+    background-color: #87CEEB99;
+  }
+  .bg-\[\#87CEEBBF\] {
+    background-color: #87CEEBBF;
+  }
+  .bg-\[\#87CEEB\] {
+    background-color: #87CEEB;
+  }
+  .bg-\[\#4169E199\] {
+    background-color: #4169E199;
+  }
+  .bg-\[\#4169E1BF\] {
+    background-color: #4169E1BF;
+  }
+  .bg-\[\#4169E1\] {
+    background-color: #4169E1;
+  }
+  .bg-\[\#6495ED99\] {
+    background-color: #6495ED99;
+  }
+  .bg-\[\#6495EDBF\] {
+    background-color: #6495EDBF;
+  }
   .bg-\[\#6495ED\] {
     background-color: #6495ED;
+  }
+  .bg-\[\#A0522D99\] {
+    background-color: #A0522D99;
+  }
+  .bg-\[\#A0522DBF\] {
+    background-color: #A0522DBF;
   }
   .bg-\[\#A0522D\] {
     background-color: #A0522D;
   }
+  .bg-\[\#C7158599\] {
+    background-color: #C7158599;
+  }
+  .bg-\[\#C71585BF\] {
+    background-color: #C71585BF;
+  }
   .bg-\[\#C71585\] {
     background-color: #C71585;
+  }
+  .bg-\[\#CD5C5C99\] {
+    background-color: #CD5C5C99;
+  }
+  .bg-\[\#CD5C5CBF\] {
+    background-color: #CD5C5CBF;
   }
   .bg-\[\#CD5C5C\] {
     background-color: #CD5C5C;
   }
+  .bg-\[\#D2691E99\] {
+    background-color: #D2691E99;
+  }
+  .bg-\[\#D2691EBF\] {
+    background-color: #D2691EBF;
+  }
   .bg-\[\#D2691E\] {
     background-color: #D2691E;
+  }
+  .bg-\[\#DAA52099\] {
+    background-color: #DAA52099;
+  }
+  .bg-\[\#DAA520BF\] {
+    background-color: #DAA520BF;
   }
   .bg-\[\#DAA520\] {
     background-color: #DAA520;
   }
+  .bg-\[\#DB709399\] {
+    background-color: #DB709399;
+  }
+  .bg-\[\#DB7093BF\] {
+    background-color: #DB7093BF;
+  }
   .bg-\[\#DB7093\] {
     background-color: #DB7093;
+  }
+  .bg-\[\#DC143C99\] {
+    background-color: #DC143C99;
+  }
+  .bg-\[\#DC143CBF\] {
+    background-color: #DC143CBF;
   }
   .bg-\[\#DC143C\] {
     background-color: #DC143C;
   }
+  .bg-\[\#EE82EE99\] {
+    background-color: #EE82EE99;
+  }
+  .bg-\[\#EE82EEBF\] {
+    background-color: #EE82EEBF;
+  }
   .bg-\[\#EE82EE\] {
     background-color: #EE82EE;
+  }
+  .bg-\[\#F0E68C99\] {
+    background-color: #F0E68C99;
+  }
+  .bg-\[\#F0E68CBF\] {
+    background-color: #F0E68CBF;
   }
   .bg-\[\#F0E68C\] {
     background-color: #F0E68C;
   }
+  .bg-\[\#F4A46099\] {
+    background-color: #F4A46099;
+  }
+  .bg-\[\#F4A460BF\] {
+    background-color: #F4A460BF;
+  }
   .bg-\[\#F4A460\] {
     background-color: #F4A460;
+  }
+  .bg-\[\#F5DEB399\] {
+    background-color: #F5DEB399;
+  }
+  .bg-\[\#F5DEB3BF\] {
+    background-color: #F5DEB3BF;
   }
   .bg-\[\#F5DEB3\] {
     background-color: #F5DEB3;
   }
+  .bg-\[\#FA807299\] {
+    background-color: #FA807299;
+  }
+  .bg-\[\#FA8072BF\] {
+    background-color: #FA8072BF;
+  }
   .bg-\[\#FA8072\] {
     background-color: #FA8072;
+  }
+  .bg-\[\#FF0000BF\] {
+    background-color: #FF0000BF;
   }
   .bg-\[\#FF0000\] {
     background-color: #FF0000;
   }
+  .bg-\[\#FF00FF99\] {
+    background-color: #FF00FF99;
+  }
+  .bg-\[\#FF00FFBF\] {
+    background-color: #FF00FFBF;
+  }
   .bg-\[\#FF00FF\] {
     background-color: #FF00FF;
+  }
+  .bg-\[\#FF7F5099\] {
+    background-color: #FF7F5099;
+  }
+  .bg-\[\#FF7F50BF\] {
+    background-color: #FF7F50BF;
   }
   .bg-\[\#FF7F50\] {
     background-color: #FF7F50;
   }
+  .bg-\[\#FF8C0099\] {
+    background-color: #FF8C0099;
+  }
+  .bg-\[\#FF8C00BF\] {
+    background-color: #FF8C00BF;
+  }
   .bg-\[\#FF8C00\] {
     background-color: #FF8C00;
+  }
+  .bg-\[\#FF69B499\] {
+    background-color: #FF69B499;
+  }
+  .bg-\[\#FF69B4BF\] {
+    background-color: #FF69B4BF;
   }
   .bg-\[\#FF69B4\] {
     background-color: #FF69B4;
   }
+  .bg-\[\#FF000099\] {
+    background-color: #FF000099;
+  }
+  .bg-\[\#FF149399\] {
+    background-color: #FF149399;
+  }
+  .bg-\[\#FF1493BF\] {
+    background-color: #FF1493BF;
+  }
   .bg-\[\#FF1493\] {
     background-color: #FF1493;
+  }
+  .bg-\[\#FF450099\] {
+    background-color: #FF450099;
+  }
+  .bg-\[\#FF4500BF\] {
+    background-color: #FF4500BF;
   }
   .bg-\[\#FF4500\] {
     background-color: #FF4500;
   }
+  .bg-\[\#FF634799\] {
+    background-color: #FF634799;
+  }
+  .bg-\[\#FF6347BF\] {
+    background-color: #FF6347BF;
+  }
   .bg-\[\#FF6347\] {
     background-color: #FF6347;
+  }
+  .bg-\[\#FFA50099\] {
+    background-color: #FFA50099;
+  }
+  .bg-\[\#FFA500BF\] {
+    background-color: #FFA500BF;
   }
   .bg-\[\#FFA500\] {
     background-color: #FFA500;
   }
+  .bg-\[\#FFFF0099\] {
+    background-color: #FFFF0099;
+  }
+  .bg-\[\#FFFF00BF\] {
+    background-color: #FFFF00BF;
+  }
   .bg-\[\#FFFF00\] {
     background-color: #FFFF00;
+  }
+  .bg-\[\$\{colors\[i\]\}99\] {
+    background-color: ${colors[i]}99;
+  }
+  .bg-\[\$\{colors\[i\]\}BF\] {
+    background-color: ${colors[i]}BF;
+  }
+  .bg-\[\$\{player\.color\}99\] {
+    background-color: ${player.color}99;
+  }
+  .bg-\[\$\{player\.color\}BF\] {
+    background-color: ${player.color}BF;
   }
   .bg-\[\$\{player\.color\}\] {
     background-color: ${player.color};
@@ -930,6 +1215,9 @@
   .text-white {
     color: var(--color-white);
   }
+  .underline {
+    text-decoration-line: underline;
+  }
   .shadow {
     --tw-shadow: 0 1px 3px 0 var(--tw-shadow-color, rgb(0 0 0 / 0.1)), 0 1px 2px -1px var(--tw-shadow-color, rgb(0 0 0 / 0.1));
     box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
@@ -941,6 +1229,10 @@
   .shadow-md {
     --tw-shadow: 0 4px 6px -1px var(--tw-shadow-color, rgb(0 0 0 / 0.1)), 0 2px 4px -2px var(--tw-shadow-color, rgb(0 0 0 / 0.1));
     box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+  }
+  .outline {
+    outline-style: var(--tw-outline-style);
+    outline-width: 1px;
   }
   .filter {
     filter: var(--tw-blur,) var(--tw-brightness,) var(--tw-contrast,) var(--tw-grayscale,) var(--tw-hue-rotate,) var(--tw-invert,) var(--tw-saturate,) var(--tw-sepia,) var(--tw-drop-shadow,);
@@ -1072,6 +1364,31 @@
   inherits: false;
   initial-value: 0;
 }
+@property --tw-rotate-x {
+  syntax: "*";
+  inherits: false;
+  initial-value: rotateX(0);
+}
+@property --tw-rotate-y {
+  syntax: "*";
+  inherits: false;
+  initial-value: rotateY(0);
+}
+@property --tw-rotate-z {
+  syntax: "*";
+  inherits: false;
+  initial-value: rotateZ(0);
+}
+@property --tw-skew-x {
+  syntax: "*";
+  inherits: false;
+  initial-value: skewX(0);
+}
+@property --tw-skew-y {
+  syntax: "*";
+  inherits: false;
+  initial-value: skewY(0);
+}
 @property --tw-border-style {
   syntax: "*";
   inherits: false;
@@ -1139,6 +1456,11 @@
   syntax: "*";
   inherits: false;
   initial-value: 0 0 #0000;
+}
+@property --tw-outline-style {
+  syntax: "*";
+  inherits: false;
+  initial-value: solid;
 }
 @property --tw-blur {
   syntax: "*";

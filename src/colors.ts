@@ -85,4 +85,15 @@ export const colors = [
   "#F4A460",
 ];
 
-// bg-[#FF0000],bg-[#00FF00],bg-[#0000FF],bg-[#FFFF00],bg-[#FF00FF],bg-[#00FFFF],bg-[#FFA500],bg-[#FF4500],bg-[#1E90FF],bg-[#32CD32],bg-[#DC143C],bg-[#FF69B4],bg-[#4B0082],bg-[#20B2AA],bg-[#DAA520],bg-[#2E8B57],bg-[#A0522D],bg-[#C71585],bg-[#F4A460],bg-[#7B68EE],bg-[#D2691E],bg-[#FF7F50],bg-[#6495ED],bg-[#7FFF00],bg-[#FF6347],bg-[#40E0D0],bg-[#EE82EE],bg-[#F0E68C],bg-[#FF1493],bg-[#00BFFF],bg-[#CD5C5C],bg-[#4169E1],bg-[#FA8072],bg-[#FF8C00],bg-[#00FF7F],bg-[#DB7093],bg-[#00FA9A],bg-[#F5DEB3],bg-[#87CEEB],bg-[#00FF5F],bg-[#32CD32],bg-[#DC143C],bg-[#FF69B4],bg-[#4B0082],bg-[#20B2AA],bg-[#DAA520],bg-[#2E8B57],bg-[#A0522D],bg-[#C71585],bg-[#F4A460],bg-[#7B68EE],bg-[#D2691E],bg-[#FF7F50],bg-[#6495ED],bg-[#7FFF00],bg-[#FF6347],bg-[#40E0D0],bg-[#EE82EE],bg-[#F0E68C],bg-[#FF1493],bg-[#00BFFF],bg-[#CD5C5C],bg-[#4169E1],bg-[#FA8072],bg-[#FF8C00],bg-[#00FF7F],bg-[#DB7093],bg-[#00FA9A],bg-[#F5DEB3],bg-[#87CEEB],bg-[#00FF5F],bg-[#FF4500],bg-[#00CED1],bg-[#1E90FF],bg-[#32CD32],bg-[#DC143C],bg-[#FF69B4],bg-[#4B0082],bg-[#20B2AA],bg-[#DAA520],bg-[#2E8B57],bg-[#A0522D],bg-[#C71585],bg-[#F4A460]
+/*
+let result  = ""
+for (i = 0; i<colors.length; i++) {
+  if (i === 0) {
+    result += `bg-[${colors[i]}BF]`
+  } else {
+    result += `,bg-[${colors[i]}BF]`
+  }
+}
+*/
+
+// bg-[#FF0000BF],bg-[#00FF00BF],bg-[#0000FFBF],bg-[#FFFF00BF],bg-[#FF00FFBF],bg-[#00FFFFBF],bg-[#FFA500BF],bg-[#FF4500BF],bg-[#1E90FFBF],bg-[#32CD32BF],bg-[#DC143CBF],bg-[#FF69B4BF],bg-[#4B0082BF],bg-[#20B2AABF],bg-[#DAA520BF],bg-[#2E8B57BF],bg-[#A0522DBF],bg-[#C71585BF],bg-[#F4A460BF],bg-[#7B68EEBF],bg-[#D2691EBF],bg-[#FF7F50BF],bg-[#6495EDBF],bg-[#7FFF00BF],bg-[#FF6347BF],bg-[#40E0D0BF],bg-[#EE82EEBF],bg-[#F0E68CBF],bg-[#FF1493BF],bg-[#00BFFFBF],bg-[#CD5C5CBF],bg-[#4169E1BF],bg-[#FA8072BF],bg-[#FF8C00BF],bg-[#00FF7FBF],bg-[#DB7093BF],bg-[#00FA9ABF],bg-[#F5DEB3BF],bg-[#87CEEBBF],bg-[#00FF5FBF],bg-[#32CD32BF],bg-[#DC143CBF],bg-[#FF69B4BF],bg-[#4B0082BF],bg-[#20B2AABF],bg-[#DAA520BF],bg-[#2E8B57BF],bg-[#A0522DBF],bg-[#C71585BF],bg-[#F4A460BF],bg-[#7B68EEBF],bg-[#D2691EBF],bg-[#FF7F50BF],bg-[#6495EDBF],bg-[#7FFF00BF],bg-[#FF6347BF],bg-[#40E0D0BF],bg-[#EE82EEBF],bg-[#F0E68CBF],bg-[#FF1493BF],bg-[#00BFFFBF],bg-[#CD5C5CBF],bg-[#4169E1BF],bg-[#FA8072BF],bg-[#FF8C00BF],bg-[#00FF7FBF],bg-[#DB7093BF],bg-[#00FA9ABF],bg-[#F5DEB3BF],bg-[#87CEEBBF],bg-[#00FF5FBF],bg-[#FF4500BF],bg-[#00CED1BF],bg-[#1E90FFBF],bg-[#32CD32BF],bg-[#DC143CBF],bg-[#FF69B4BF],bg-[#4B0082BF],bg-[#20B2AABF],bg-[#DAA520BF],bg-[#2E8B57BF],bg-[#A0522DBF],bg-[#C71585BF],bg-[#F4A460BF]

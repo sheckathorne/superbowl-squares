@@ -207,13 +207,13 @@ function createPlayersTable(
     if (forGame) {
       const tableRowClasses = `hover:bg-blue-50 cursor-pointer`;
       tableRow.classList.add(...tableRowClasses.split(" "));
+      const sqClasses = "border-4 border-gray-900";
 
       tableRow.addEventListener("mouseover", function () {
         player.squares.forEach((square) => {
           const sq = document.getElementById(
             JSON.stringify(square),
           ) as HTMLElement;
-          const sqClasses = "border-4 border-red-400";
           sq.classList.add(...sqClasses.split(" "));
         });
       });
@@ -223,7 +223,6 @@ function createPlayersTable(
           const sq = document.getElementById(
             JSON.stringify(square),
           ) as HTMLElement;
-          const sqClasses = "border-4 border-red-400";
           sq.classList.remove(...sqClasses.split(" "));
         });
       });
@@ -250,7 +249,7 @@ function createPlayersTable(
       "rounded",
       "border",
       "border-gray-200",
-      `bg-[${player.color}]`,
+      `bg-[${player.color}BF]`,
     ]);
 
     nameColumn.textContent = `${player.name}`;
@@ -379,7 +378,7 @@ function initGrid(): void {
         cell.id = `[${i},${j}]`;
 
         if (player) {
-          cell.classList.add(`bg-[${player.color}]`);
+          cell.classList.add(`bg-[${player.color}BF]`);
           cell.textContent = `${player.name.substring(0, 1)}`;
         }
       }
