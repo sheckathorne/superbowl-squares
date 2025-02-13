@@ -135,9 +135,15 @@ function deletePlayer(playerId: number, tableRow: HTMLElement) {
   tableRow.remove();
   if (filteredPlayers.length === 0) {
     const playersList = document.getElementById("players-list") as HTMLElement;
+    const beginButton = document.getElementById(
+      "begin-game-parent",
+    ) as HTMLElement;
     playersList.innerHTML = "";
+    beginButton.remove();
   }
-  createPlayersTable(filteredPlayers, "players-list");
+  if (filteredPlayers.length > 0) {
+    createPlayersTable(filteredPlayers, "players-list");
+  }
 }
 
 function createPlayersTable(
@@ -284,6 +290,7 @@ function createStartGameButton(playersList: HTMLElement): void {
   button.classList.add(...buttonClasses.split(" "));
   hiddenDiv.classList.add(...hiddenDivClasses.split(" "));
   parentDiv.classList.add(...divClasses.split(" "));
+  parentDiv.id = "begin-game-parent";
 
   button.textContent = "Begin Game";
   hiddenDiv.textContent =
