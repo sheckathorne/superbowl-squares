@@ -224,9 +224,9 @@ function createPlayersTable(
     title +
     "<table class='w-full max-w-lg border-collapse mb-4'><tbody></tbody>" +
     "<thead><tr>" +
-    "<th class='p-2 text-left'>Color</th>" +
-    "<th class='p-2 text-left'>Name</th>" +
-    "<th class='p-2 text-center'>Squares</th>" +
+    "<th class='p-2 text-left md:text-base text-sm'>Color</th>" +
+    "<th class='p-2 text-left md:text-base text-sm'>Name</th>" +
+    "<th class='p-2 text-center md:text-base text-sm'>Squares</th>" +
     "<th></th></tr></thead></table>";
 
   const tableBody = playersList.getElementsByTagName("tbody")[0] as HTMLElement;
@@ -262,20 +262,28 @@ function createPlayersTable(
       "p-2",
       "text-left",
       "align-middle",
+      "md:text-base",
+      "text-xs"
     ]);
     const nameColumn = createTableElement("td", [
       "p-2",
       "text-left",
       "align-middle",
+      "md:text-base",
+      "text-xs"
     ]);
     const squareCountColumn = createTableElement("td", [
       "p-2",
       "text-center",
       "align-middle",
+      "md:text-base",
+      "text-xs"
     ]);
     const colorSquare = createTableElement("div", [
-      "w-6",
-      "h-6",
+      "w-4",
+      "h-4",
+      "md:w-6",
+      "md:h-6",
       "rounded",
       "border",
       "border-gray-200",
@@ -373,7 +381,7 @@ function numberToGridCoordinate(num: number): [number, number] {
 
 function initGrid(): void {
   const gridContainer = document.createElement("div");
-  gridContainer.classList.add("grid", "grid-cols-11", "gap-1");
+  gridContainer.classList.add("grid", "grid-cols-11", "gap-1", "aspect-square", "px-2");
   const grid = document.querySelector(".superbowl-grid") as HTMLElement;
   grid.appendChild(gridContainer);
   const playersData = getPlayers();
@@ -382,13 +390,16 @@ function initGrid(): void {
     for (let j = -1; j < 10; j++) {
       const cell = document.createElement("div");
       cell.classList.add(
-        "w-10",
-        "h-10",
+        "w-[20px]",
+        "h-[20px]",
+        "md:size-8",
         "border",
         "border-gray-400",
         "flex",
         "items-center",
         "justify-center",
+        "aspect-square",
+        "text-xs"
       );
 
       if (i === -1 && j >= 0) {
