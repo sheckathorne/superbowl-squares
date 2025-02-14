@@ -2,7 +2,14 @@ import { colors } from "./colors.js";
 initializeGame();
 initializeNewPlayerForm();
 function initializeGame() {
-    if (gameExists()) {
+    if (gameHasStarted()) {
+        initGrid();
+        activateSection("game-board-parent");
+    }
+    else if (gameExists()) {
+        const registeredSquares = parseInt(localStorage.getItem("registeredSquares") || "0");
+        const maxSquares = 100 - registeredSquares;
+        setSquareCountInputMaxAttribute(maxSquares);
         activateSection("add-player-parent");
         createPlayersTable(getPlayers(), "players-list");
     }
@@ -11,6 +18,11 @@ function initializeGame() {
         setStartButtonAction();
         initializeData();
     }
+}
+function setSquareCountInputMaxAttribute(maxSquareCountNumber) {
+    const squareCountInput = document.getElementById("square-count");
+    squareCountInput.setAttribute("max", maxSquareCountNumber.toString());
+    squareCountInput.setAttribute("placeholder", `Enter square count, up to ${maxSquareCountNumber.toString()}`);
 }
 function setStartButtonAction() {
     const startButton = document.getElementById("start-button");
@@ -31,6 +43,17 @@ function activateSection(sectionId) {
 }
 function gameExists() {
     return getPlayers()?.length > 0;
+}
+function gameHasStarted() {
+    const players = getPlayers();
+    if (players) {
+        for (const player of players) {
+            if (player.squares.length > 0) {
+                return true;
+            }
+        }
+    }
+    return false;
 }
 function initializeData() {
     const players = getPlayers();
@@ -54,10 +77,8 @@ function incrementRegisteredSquares(squareCount) {
     const newRegisteredSquareCount = getRegisteredSquaresCount() + squareCount;
     localStorage.setItem("registeredSquares", newRegisteredSquareCount.toString());
     // Update the 'max' attribute for the form item
-    const squareCountInput = document.getElementById("square-count");
     const maxSquareCount = 100 - newRegisteredSquareCount;
-    squareCountInput.setAttribute("max", maxSquareCount.toString());
-    squareCountInput.setAttribute("placeholder", `Enter square count, up to ${maxSquareCount.toString()}`);
+    setSquareCountInputMaxAttribute(maxSquareCount);
 }
 function setPlayers(players) {
     localStorage.setItem("players", JSON.stringify(players));
@@ -219,6 +240,7 @@ function createStartGameButton(playersList) {
     hiddenDiv.textContent =
         "Once the game begins, random squares will be assigned and no changes will be allowed. Click to continue.";
     button.addEventListener("click", function () {
+        assignNumbers();
         initGrid();
         activateSection("game-board-parent");
     });
@@ -239,6 +261,7 @@ function assignNumbers() {
     let numbers = [...Array(100).keys()];
     const players = getPlayers();
     players.forEach((player) => {
+        player.squares = [];
         let [results, remainingNumbers] = generateUniqueRandomNumbers(player.squareCount, numbers);
         results.forEach((result) => {
             const coordinate = numberToGridCoordinate(result);
@@ -257,7 +280,6 @@ function numberToGridCoordinate(num) {
     return [col, row];
 }
 function initGrid() {
-    assignNumbers();
     const gridContainer = document.createElement("div");
     gridContainer.classList.add("grid", "grid-cols-11", "gap-1");
     const grid = document.querySelector(".superbowl-grid");
