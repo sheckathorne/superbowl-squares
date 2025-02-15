@@ -15,22 +15,26 @@ interface Team {
   logoUrl: string;
 }
 
+interface SelectedTeam extends Team {
+  side: string;
+}
+
 initializeGame();
 initializeNewPlayerForm();
+initializeTeamsForm();
 
 function initializeGame() {
   if (gameHasStarted()){
     initGrid();
     activateSection("game-board-parent");
-  } else if (playersExist()) {
+  } else if (playersExist() || teamsSelected()) {
     const registeredSquares = parseInt(localStorage.getItem("registeredSquares") || "0")
     const maxSquares = 100 - registeredSquares;
     setSquareCountInputMaxAttribute(maxSquares);
     activateSection("add-player-parent");
-    createPlayersTable(getPlayers(), "players-list");
-  } else if (teamsSelected()) {
-    initTeamSelect();
-    activateSection("add-teams-parent");
+    if (playersExist()) {
+      createPlayersTable(getPlayers(), "players-list");
+    }
   } else {
     activateSection("welcome-box");
     setStartButtonAction();
@@ -160,7 +164,7 @@ function getPlayers(): Player[] {
   });
 }
 
-function getTeams(): Team[] {
+function getTeams(): SelectedTeam[] {
   const players = localStorage.getItem("teams") || "[]";
   return JSON.parse(players, function (k, v) {
     return typeof v === "object" || isNaN(v) ? v : parseInt(v, 10);
@@ -188,7 +192,7 @@ function setPlayers(players: Player[]) {
   localStorage.setItem("players", JSON.stringify(players));
 }
 
-function setTeams(teams: Team[]) {
+function setTeams(teams: SelectedTeam[]) {
   localStorage.setItem("teams", JSON.stringify(teams));
 }
 
@@ -294,7 +298,7 @@ function createPlayersTable(
 
   const playersList = document.getElementById(elementId) as HTMLElement;
   const title = !forGame
-    ? "<h1 class='block text-gray-800 text-lg font-bold mb-3'>Players Added</h1>"
+    ? "<h1 class='block text-gray-800 text-lg font-bold mt-6 mb-3'>Players Added</h1>"
     : "";
 
   playersList.innerHTML =
@@ -542,6 +546,40 @@ function initializeNewPlayerForm() {
       resetPlayerInputForm(form);
     }
   });
+
+  document.getElementById("back-to-teams")?.addEventListener("click", function () {
+    activateSection("add-teams-parent");
+  })
 }
 
-// bg-[#FF0000],bg-[#00FF00],bg-[#0000FF],bg-[#FFFF00],bg-[#FF00FF],bg-[#00FFFF],bg-[#FFA500],bg-[#FF4500],bg-[#1E90FF],bg-[#32CD32],bg-[#DC143C],bg-[#FF69B4],bg-[#4B0082],bg-[#20B2AA],bg-[#DAA520],bg-[#2E8B57],bg-[#A0522D],bg-[#C71585],bg-[#F4A460],bg-[#7B68EE],bg-[#D2691E],bg-[#FF7F50],bg-[#6495ED],bg-[#7FFF00],bg-[#FF6347],bg-[#40E0D0],bg-[#EE82EE],bg-[#F0E68C],bg-[#FF1493],bg-[#00BFFF],bg-[#CD5C5C],bg-[#4169E1],bg-[#FA8072],bg-[#FF8C00],bg-[#00FF7F],bg-[#DB7093],bg-[#00FA9A],bg-[#F5DEB3],bg-[#87CEEB],bg-[#00FF5F],bg-[#32CD32],bg-[#DC143C],bg-[#FF69B4],bg-[#4B0082],bg-[#20B2AA],bg-[#DAA520],bg-[#2E8B57],bg-[#A0522D],bg-[#C71585],bg-[#F4A460],bg-[#7B68EE],bg-[#D2691E],bg-[#FF7F50],bg-[#6495ED],bg-[#7FFF00],bg-[#FF6347],bg-[#40E0D0],bg-[#EE82EE],bg-[#F0E68C],bg-[#FF1493],bg-[#00BFFF],bg-[#CD5C5C],bg-[#4169E1],bg-[#FA8072],bg-[#FF8C00],bg-[#00FF7F],bg-[#DB7093],bg-[#00FA9A],bg-[#F5DEB3],bg-[#87CEEB],bg-[#00FF5F],bg-[#FF4500],bg-[#00CED1],bg-[#1E90FF],bg-[#32CD32],bg-[#DC143C],bg-[#FF69B4],bg-[#4B0082],bg-[#20B2AA],bg-[#DAA520],bg-[#2E8B57],bg-[#A0522D],bg-[#C71585],bg-[#F4A460]
+function initializeTeamsForm() {
+  const form = document.getElementById("add-teams-form") as HTMLFormElement;
+
+  if (teamsSelected()) {
+    const teams = getTeams();
+    const sides = ["home","away"]
+    initTeamSelect();
+    setNextButtonAction();
+    sides.forEach(side => {
+      const teamSelect = form.elements.namedItem(`${side}-team`) as HTMLSelectElement;
+      teamSelect.value = teams.find(team => team.side === side)?.id?.toString() ?? '';
+    })
+  }
+
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    let teams: SelectedTeam[] = []
+    const formData = new FormData(form);
+    const selectedTeams = [
+      { side: "home", id: String(formData.get("home-team")) || "0" },
+      { side: "away", id: String(formData.get("away-team")) || "0" }
+    ]
+    selectedTeams.forEach(selectedTeam => {
+      const team = nflTeams.find(team => team.id === parseInt(selectedTeam.id))
+      if (team) {
+        teams.push({ ...team, side: selectedTeam.side });
+      }
+    })
+    setTeams(teams);
+  });
+}

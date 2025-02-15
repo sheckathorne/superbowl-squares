@@ -34,12 +34,17 @@
                 id="add-player-section"
                 class="flex items-center justify-center min-h-screen"
             >
-                <div id="add-player-subsection" class="w-full max-w-md">
+                <div id="add-player-subsection" class="w-full max-w-md relative">
+                    <button id="back-to-teams" type="button" class="absolute cursor-pointer left-2 top-2 text-gray-600 hover:text-gray-800 transition-colors duration-200">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M19 12H5M12 19l-7-7 7-7"/>
+                            </svg>
+                        </button>
                     <form
                         id="add-player-form"
                         class="bg-white rounded-xl shadow-lg p-12 mb-6"
                     >
-                        <div class="mb-6">
+                        <div>
                             <div class="mb-6">
                                 <label
                                     class="block text-gray-800 text-lg font-bold mb-3"
@@ -82,7 +87,7 @@
                                 </button>
                             </div>
                         </div>
-                        <div id="players-list" class="mb-4"></div>
+                        <div id="players-list"></div>
                     </form>
                     <p class="text-center text-gray-500 text-sm">
                         &copy;2025 Heckathorne Industries. All rights reserved.
