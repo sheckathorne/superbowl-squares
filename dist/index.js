@@ -1,4 +1,5 @@
 import { colors } from "./colors.js";
+import { nflTeams } from "./teams.js";
 initializeGame();
 initializeNewPlayerForm();
 function initializeGame() {
@@ -6,18 +7,64 @@ function initializeGame() {
         initGrid();
         activateSection("game-board-parent");
     }
-    else if (gameExists()) {
+    else if (playersExist()) {
         const registeredSquares = parseInt(localStorage.getItem("registeredSquares") || "0");
         const maxSquares = 100 - registeredSquares;
         setSquareCountInputMaxAttribute(maxSquares);
         activateSection("add-player-parent");
         createPlayersTable(getPlayers(), "players-list");
     }
+    else if (teamsSelected()) {
+        initTeamSelect();
+        activateSection("add-teams-parent");
+    }
     else {
         activateSection("welcome-box");
         setStartButtonAction();
+        setNextButtonAction();
         initializeData();
     }
+}
+function initTeamSelect() {
+    const elements = ["home-team", "away-team"];
+    function getOtherElement(el) {
+        const otherElementId = elements.filter(element => element !== el.id)[0];
+        const otherElement = document.getElementById(otherElementId);
+        return otherElement;
+    }
+    function populateTeamSelect(el) {
+        const elements = ["home-team", "away-team"];
+        el.innerHTML = '';
+        const defaultOption = document.createElement("option");
+        defaultOption.text = "-- Select a Team --";
+        defaultOption.value = "";
+        el.appendChild(defaultOption);
+        nflTeams
+            .filter(team => {
+            return team.id.toString() !== getOtherElement(el).value;
+        })
+            .sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0))
+            .forEach(team => {
+            const option = document.createElement("option");
+            option.value = team.id.toString();
+            option.text = team.name;
+            el.appendChild(option);
+        });
+    }
+    const selectElements = document.querySelectorAll(".team-select");
+    selectElements.forEach(el => {
+        populateTeamSelect(el);
+        el.addEventListener("change", function () {
+            const otherElement = getOtherElement(el);
+            const otherValue = otherElement.value;
+            populateTeamSelect(getOtherElement(el));
+            otherElement.value = otherValue;
+        });
+    });
+}
+function teamsSelected() {
+    const teams = getTeams();
+    return teams.length > 0;
 }
 function setSquareCountInputMaxAttribute(maxSquareCountNumber) {
     const squareCountInput = document.getElementById("square-count");
@@ -27,6 +74,12 @@ function setSquareCountInputMaxAttribute(maxSquareCountNumber) {
 function setStartButtonAction() {
     const startButton = document.getElementById("start-button");
     startButton.addEventListener("click", function () {
+        activateSection("add-teams-parent");
+    });
+}
+function setNextButtonAction() {
+    const nextButton = document.getElementById("next-button");
+    nextButton.addEventListener("click", function () {
         activateSection("add-player-parent");
     });
 }
@@ -34,6 +87,7 @@ function activateSection(sectionId) {
     const SECTIONS = [
         { id: "welcome-box", style: "flex" },
         { id: "add-player-parent", style: "block" },
+        { id: "add-teams-parent", style: "block" },
         { id: "game-board-parent", style: "block" },
     ];
     SECTIONS.forEach((section) => {
@@ -41,7 +95,7 @@ function activateSection(sectionId) {
         element.style.display = section.id === sectionId ? section.style : "none";
     });
 }
-function gameExists() {
+function playersExist() {
     return getPlayers()?.length > 0;
 }
 function gameHasStarted() {
@@ -59,11 +113,19 @@ function initializeData() {
     const players = getPlayers();
     if (players?.length === 0 || !players) {
         localStorage.setItem("players", "[]");
+        localStorage.setItem("teams", "[]");
         localStorage.setItem("registeredSquares", "0");
     }
+    initTeamSelect();
 }
 function getPlayers() {
     const players = localStorage.getItem("players") || "[]";
+    return JSON.parse(players, function (k, v) {
+        return typeof v === "object" || isNaN(v) ? v : parseInt(v, 10);
+    });
+}
+function getTeams() {
+    const players = localStorage.getItem("teams") || "[]";
     return JSON.parse(players, function (k, v) {
         return typeof v === "object" || isNaN(v) ? v : parseInt(v, 10);
     });
@@ -73,15 +135,16 @@ function getRegisteredSquaresCount() {
     return parseInt(registeredSquaresCount);
 }
 function incrementRegisteredSquares(squareCount) {
-    // Save the square count in local storage
     const newRegisteredSquareCount = getRegisteredSquaresCount() + squareCount;
     localStorage.setItem("registeredSquares", newRegisteredSquareCount.toString());
-    // Update the 'max' attribute for the form item
     const maxSquareCount = 100 - newRegisteredSquareCount;
     setSquareCountInputMaxAttribute(maxSquareCount);
 }
 function setPlayers(players) {
     localStorage.setItem("players", JSON.stringify(players));
+}
+function setTeams(teams) {
+    localStorage.setItem("teams", JSON.stringify(teams));
 }
 function addNewPlayer(name, squareCount) {
     const players = getPlayers();
