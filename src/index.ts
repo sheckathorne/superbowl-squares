@@ -24,11 +24,13 @@ initializeNewPlayerForm();
 initializeTeamsForm();
 
 function initializeGame() {
-  if (gameHasStarted()){
+  if (gameHasStarted()) {
     initGrid();
     activateSection("game-board-parent");
   } else if (playersExist() || teamsSelected()) {
-    const registeredSquares = parseInt(localStorage.getItem("registeredSquares") || "0")
+    const registeredSquares = parseInt(
+      localStorage.getItem("registeredSquares") || "0",
+    );
     const maxSquares = 100 - registeredSquares;
     setSquareCountInputMaxAttribute(maxSquares);
     activateSection("add-player-parent");
@@ -43,48 +45,50 @@ function initializeGame() {
   }
 }
 
-
-
 function initTeamSelect(): void {
   const elements = ["home-team", "away-team"];
 
   function getOtherElement(el: HTMLSelectElement): HTMLSelectElement {
-    const otherElementId = elements.filter(element => element !== el.id)[0];
-    const otherElement = document.getElementById(otherElementId) as HTMLSelectElement;
-    return otherElement
+    const otherElementId = elements.filter((element) => element !== el.id)[0];
+    const otherElement = document.getElementById(
+      otherElementId,
+    ) as HTMLSelectElement;
+    return otherElement;
   }
 
   function populateTeamSelect(el: HTMLSelectElement): void {
     const elements = ["home-team", "away-team"];
-    el.innerHTML = '';
-    const defaultOption = document.createElement("option")
-    defaultOption.text = "-- Select a Team --"
-    defaultOption.value = ""
+    el.innerHTML = "";
+    const defaultOption = document.createElement("option");
+    defaultOption.text = "-- Select a Team --";
+    defaultOption.value = "";
     el.appendChild(defaultOption);
 
     nflTeams
-      .filter(team => {
+      .filter((team) => {
         return team.id.toString() !== getOtherElement(el).value;
       })
-      .sort((a,b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0))
-      .forEach(team => {
-        const option = document.createElement("option")
+      .sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0))
+      .forEach((team) => {
+        const option = document.createElement("option");
         option.value = team.id.toString();
         option.text = team.name;
         el.appendChild(option);
-      })
+      });
   }
 
-  const selectElements = document.querySelectorAll(".team-select") as NodeListOf<HTMLSelectElement>;
-  selectElements.forEach(el => {
+  const selectElements = document.querySelectorAll(
+    ".team-select",
+  ) as NodeListOf<HTMLSelectElement>;
+  selectElements.forEach((el) => {
     populateTeamSelect(el);
     el.addEventListener("change", function () {
       const otherElement = getOtherElement(el);
       const otherValue = otherElement.value;
       populateTeamSelect(getOtherElement(el));
       otherElement.value = otherValue;
-    })
-  })
+    });
+  });
 }
 
 function teamsSelected(): boolean {
@@ -273,6 +277,7 @@ function createPlayersTable(
       "bg-red-600",
       "text-white",
       "text-xs",
+      "cursor-pointer"
       "rounded-md",
       "hover:bg-red-700",
       "focus:outline-none",
@@ -344,21 +349,21 @@ function createPlayersTable(
       "text-left",
       "align-middle",
       "md:text-base",
-      "text-xs"
+      "text-xs",
     ]);
     const nameColumn = createTableElement("td", [
       "p-2",
       "text-left",
       "align-middle",
       "md:text-base",
-      "text-xs"
+      "text-xs",
     ]);
     const squareCountColumn = createTableElement("td", [
       "p-2",
       "text-center",
       "align-middle",
       "md:text-base",
-      "text-xs"
+      "text-xs",
     ]);
     const colorSquare = createTableElement("div", [
       "w-4",
@@ -395,7 +400,7 @@ function createStartGameButton(playersList: HTMLElement): void {
   const hiddenDiv = document.createElement("div");
 
   const buttonClasses =
-    "peer px-6 py-3 text-white text-lg font-bold bg-green-500 rounded-lg hover:bg-green-600 transition-colors duration-200 shadow-lg";
+    "peer px-6 py-3 text-white text-lg font-bold bg-green-500 rounded-lg hover:bg-green-600 transition-colors duration-200 shadow-lg cursor-pointer";
   const hiddenDivClasses =
     "hidden peer-hover:block absolute top-full left-0 mt-2 text-xs text-red-500 w-full";
   const divClasses = "relative";
@@ -462,7 +467,13 @@ function numberToGridCoordinate(num: number): [number, number] {
 
 function initGrid(): void {
   const gridContainer = document.createElement("div");
-  gridContainer.classList.add("grid", "grid-cols-11", "gap-1", "aspect-square", "px-2");
+  gridContainer.classList.add(
+    "grid",
+    "grid-cols-11",
+    "gap-1",
+    "aspect-square",
+    "px-2",
+  );
   const grid = document.querySelector(".superbowl-grid") as HTMLElement;
   grid.appendChild(gridContainer);
   const playersData = getPlayers();
@@ -480,7 +491,7 @@ function initGrid(): void {
         "items-center",
         "justify-center",
         "aspect-square",
-        "text-xs"
+        "text-xs",
       );
 
       if (i === -1 && j >= 0) {
@@ -547,9 +558,11 @@ function initializeNewPlayerForm() {
     }
   });
 
-  document.getElementById("back-to-teams")?.addEventListener("click", function () {
-    activateSection("add-teams-parent");
-  })
+  document
+    .getElementById("back-to-teams")
+    ?.addEventListener("click", function () {
+      activateSection("add-teams-parent");
+    });
 }
 
 function initializeTeamsForm() {
@@ -557,29 +570,34 @@ function initializeTeamsForm() {
 
   if (teamsSelected()) {
     const teams = getTeams();
-    const sides = ["home","away"]
+    const sides = ["home", "away"];
     initTeamSelect();
     setNextButtonAction();
-    sides.forEach(side => {
-      const teamSelect = form.elements.namedItem(`${side}-team`) as HTMLSelectElement;
-      teamSelect.value = teams.find(team => team.side === side)?.id?.toString() ?? '';
-    })
+    sides.forEach((side) => {
+      const teamSelect = form.elements.namedItem(
+        `${side}-team`,
+      ) as HTMLSelectElement;
+      teamSelect.value =
+        teams.find((team) => team.side === side)?.id?.toString() ?? "";
+    });
   }
 
   form.addEventListener("submit", (e) => {
     e.preventDefault();
-    let teams: SelectedTeam[] = []
+    let teams: SelectedTeam[] = [];
     const formData = new FormData(form);
     const selectedTeams = [
       { side: "home", id: String(formData.get("home-team")) || "0" },
-      { side: "away", id: String(formData.get("away-team")) || "0" }
-    ]
-    selectedTeams.forEach(selectedTeam => {
-      const team = nflTeams.find(team => team.id === parseInt(selectedTeam.id))
+      { side: "away", id: String(formData.get("away-team")) || "0" },
+    ];
+    selectedTeams.forEach((selectedTeam) => {
+      const team = nflTeams.find(
+        (team) => team.id === parseInt(selectedTeam.id),
+      );
       if (team) {
         teams.push({ ...team, side: selectedTeam.side });
       }
-    })
+    });
     setTeams(teams);
   });
 }

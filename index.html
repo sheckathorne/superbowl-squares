@@ -20,7 +20,7 @@
                 </h1>
                 <button
                     id="start-button"
-                    class="px-8 py-4 text-white text-xl font-bold bg-green-500 rounded-lg hover:bg-green-600 transition-colors duration-200 shadow-lg"
+                    class="px-8 py-4 text-white text-xl font-bold bg-green-500 rounded-lg hover:bg-green-600 transition-colors duration-200 shadow-lg cursor-pointer"
                 >
                     Start
                 </button>
@@ -34,12 +34,29 @@
                 id="add-player-section"
                 class="flex items-center justify-center min-h-screen"
             >
-                <div id="add-player-subsection" class="w-full max-w-md relative">
-                    <button id="back-to-teams" type="button" class="absolute cursor-pointer left-2 top-2 text-gray-600 hover:text-gray-800 transition-colors duration-200">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M19 12H5M12 19l-7-7 7-7"/>
-                            </svg>
-                        </button>
+                <div
+                    id="add-player-subsection"
+                    class="w-full max-w-md relative"
+                >
+                    <button
+                        id="back-to-teams"
+                        type="button"
+                        class="absolute cursor-pointer left-2 top-2 text-gray-600 hover:text-gray-800 transition-colors duration-200"
+                    >
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        >
+                            <path d="M19 12H5M12 19l-7-7 7-7" />
+                        </svg>
+                    </button>
                     <form
                         id="add-player-form"
                         class="bg-white rounded-xl shadow-lg p-12 mb-6"
@@ -81,7 +98,7 @@
                             <div class="flex gap-4">
                                 <button
                                     type="submit"
-                                    class="px-6 py-3 text-white text-lg font-bold bg-green-500 rounded-lg hover:bg-green-600 transition-colors duration-200 shadow-lg"
+                                    class="px-6 py-3 text-white text-lg font-bold bg-green-500 rounded-lg hover:bg-green-600 transition-colors duration-200 shadow-lg cursor-pointer"
                                 >
                                     Add
                                 </button>
@@ -117,8 +134,8 @@
                                 <select
                                     class="team-select w-full px-4 py-3 text-gray-700 bg-gray-50 rounded-lg border border-gray-200 focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-colors duration-200 shadow"
                                     id="home-team"
-                                    name="home-team">
-                                </select>
+                                    name="home-team"
+                                ></select>
                             </div>
                             <div class="mb-6">
                                 <label
@@ -130,14 +147,14 @@
                                 <select
                                     class="team-select w-full px-4 py-3 text-gray-700 bg-gray-50 rounded-lg border border-gray-200 focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-colors duration-200 shadow"
                                     id="away-team"
-                                    name="away-team">
-                                </select>
+                                    name="away-team"
+                                ></select>
                             </div>
                             <div class="flex gap-4">
                                 <button
                                     id="next-button"
                                     type="submit"
-                                    class="px-6 py-3 text-white text-lg font-bold bg-green-500 rounded-lg hover:bg-green-600 transition-colors duration-200 shadow-lg"
+                                    class="px-6 py-3 text-white text-lg font-bold bg-green-500 rounded-lg hover:bg-green-600 transition-colors duration-200 shadow-lg cursor-pointer"
                                 >
                                     Next
                                 </button>

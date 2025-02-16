@@ -27,23 +27,23 @@ function initializeGame() {
 function initTeamSelect() {
     const elements = ["home-team", "away-team"];
     function getOtherElement(el) {
-        const otherElementId = elements.filter(element => element !== el.id)[0];
+        const otherElementId = elements.filter((element) => element !== el.id)[0];
         const otherElement = document.getElementById(otherElementId);
         return otherElement;
     }
     function populateTeamSelect(el) {
         const elements = ["home-team", "away-team"];
-        el.innerHTML = '';
+        el.innerHTML = "";
         const defaultOption = document.createElement("option");
         defaultOption.text = "-- Select a Team --";
         defaultOption.value = "";
         el.appendChild(defaultOption);
         nflTeams
-            .filter(team => {
+            .filter((team) => {
             return team.id.toString() !== getOtherElement(el).value;
         })
-            .sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0))
-            .forEach(team => {
+            .sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0))
+            .forEach((team) => {
             const option = document.createElement("option");
             option.value = team.id.toString();
             option.text = team.name;
@@ -51,7 +51,7 @@ function initTeamSelect() {
         });
     }
     const selectElements = document.querySelectorAll(".team-select");
-    selectElements.forEach(el => {
+    selectElements.forEach((el) => {
         populateTeamSelect(el);
         el.addEventListener("change", function () {
             const otherElement = getOtherElement(el);
@@ -201,7 +201,7 @@ function createPlayersTable(players, elementId, forGame = false) {
         const deleteButtonColumn = document.createElement("td");
         const deleteButton = document.createElement("button");
         deleteButtonColumn.classList.add("p-2", "text-center", "align-middle");
-        deleteButton.classList.add("m-2", "px-4", "py-2", "bg-red-600", "text-white", "text-xs", "rounded-md", "hover:bg-red-700", "focus:outline-none", "focus:ring-2", "focus:ring-red-400");
+        deleteButton.classList.add("m-2", "px-4", "py-2", "bg-red-600", "text-white", "text-xs", "cursor-pointer", "rounded-md", "hover:bg-red-700", "focus:outline-none", "focus:ring-2", "focus:ring-red-400");
         deleteButton.textContent = "Delete";
         deleteButton.setAttribute("data-id", id.toString());
         deleteButton.addEventListener("click", function (e) {
@@ -253,21 +253,21 @@ function createPlayersTable(players, elementId, forGame = false) {
             "text-left",
             "align-middle",
             "md:text-base",
-            "text-xs"
+            "text-xs",
         ]);
         const nameColumn = createTableElement("td", [
             "p-2",
             "text-left",
             "align-middle",
             "md:text-base",
-            "text-xs"
+            "text-xs",
         ]);
         const squareCountColumn = createTableElement("td", [
             "p-2",
             "text-center",
             "align-middle",
             "md:text-base",
-            "text-xs"
+            "text-xs",
         ]);
         const colorSquare = createTableElement("div", [
             "w-4",
@@ -299,7 +299,7 @@ function createStartGameButton(playersList) {
     const button = document.createElement("button");
     const parentDiv = document.createElement("div");
     const hiddenDiv = document.createElement("div");
-    const buttonClasses = "peer px-6 py-3 text-white text-lg font-bold bg-green-500 rounded-lg hover:bg-green-600 transition-colors duration-200 shadow-lg";
+    const buttonClasses = "peer px-6 py-3 text-white text-lg font-bold bg-green-500 rounded-lg hover:bg-green-600 transition-colors duration-200 shadow-lg cursor-pointer";
     const hiddenDivClasses = "hidden peer-hover:block absolute top-full left-0 mt-2 text-xs text-red-500 w-full";
     const divClasses = "relative";
     button.classList.add(...buttonClasses.split(" "));
@@ -413,7 +413,9 @@ function initializeNewPlayerForm() {
             resetPlayerInputForm(form);
         }
     });
-    document.getElementById("back-to-teams")?.addEventListener("click", function () {
+    document
+        .getElementById("back-to-teams")
+        ?.addEventListener("click", function () {
         activateSection("add-teams-parent");
     });
 }
@@ -424,9 +426,10 @@ function initializeTeamsForm() {
         const sides = ["home", "away"];
         initTeamSelect();
         setNextButtonAction();
-        sides.forEach(side => {
+        sides.forEach((side) => {
             const teamSelect = form.elements.namedItem(`${side}-team`);
-            teamSelect.value = teams.find(team => team.side === side)?.id?.toString() ?? '';
+            teamSelect.value =
+                teams.find((team) => team.side === side)?.id?.toString() ?? "";
         });
     }
     form.addEventListener("submit", (e) => {
@@ -435,10 +438,10 @@ function initializeTeamsForm() {
         const formData = new FormData(form);
         const selectedTeams = [
             { side: "home", id: String(formData.get("home-team")) || "0" },
-            { side: "away", id: String(formData.get("away-team")) || "0" }
+            { side: "away", id: String(formData.get("away-team")) || "0" },
         ];
-        selectedTeams.forEach(selectedTeam => {
-            const team = nflTeams.find(team => team.id === parseInt(selectedTeam.id));
+        selectedTeams.forEach((selectedTeam) => {
+            const team = nflTeams.find((team) => team.id === parseInt(selectedTeam.id));
             if (team) {
                 teams.push({ ...team, side: selectedTeam.side });
             }
