@@ -557,9 +557,6 @@
   .top-1 {
     top: calc(var(--spacing) * 1);
   }
-  .top-1\/2 {
-    top: calc(1/2 * 100%);
-  }
   .top-2 {
     top: calc(var(--spacing) * 2);
   }
@@ -870,248 +867,125 @@
   .bg-\[\#0000FFBF\] {
     background-color: #0000FFBF;
   }
-  .bg-\[\#0000FF\] {
-    background-color: #0000FF;
-  }
   .bg-\[\#00BFFFBF\] {
     background-color: #00BFFFBF;
-  }
-  .bg-\[\#00BFFF\] {
-    background-color: #00BFFF;
   }
   .bg-\[\#00CED1BF\] {
     background-color: #00CED1BF;
   }
-  .bg-\[\#00CED1\] {
-    background-color: #00CED1;
-  }
   .bg-\[\#00FA9ABF\] {
     background-color: #00FA9ABF;
-  }
-  .bg-\[\#00FA9A\] {
-    background-color: #00FA9A;
   }
   .bg-\[\#00FF00BF\] {
     background-color: #00FF00BF;
   }
-  .bg-\[\#00FF00\] {
-    background-color: #00FF00;
-  }
   .bg-\[\#00FF5FBF\] {
     background-color: #00FF5FBF;
-  }
-  .bg-\[\#00FF5F\] {
-    background-color: #00FF5F;
   }
   .bg-\[\#00FF7FBF\] {
     background-color: #00FF7FBF;
   }
-  .bg-\[\#00FF7F\] {
-    background-color: #00FF7F;
-  }
   .bg-\[\#00FFFFBF\] {
     background-color: #00FFFFBF;
-  }
-  .bg-\[\#00FFFF\] {
-    background-color: #00FFFF;
   }
   .bg-\[\#1E90FFBF\] {
     background-color: #1E90FFBF;
   }
-  .bg-\[\#1E90FF\] {
-    background-color: #1E90FF;
-  }
-  .bg-\[\#4B0082\] {
-    background-color: #4B0082;
+  .bg-\[\#4B0082BF\] {
+    background-color: #4B0082BF;
   }
   .bg-\[\#7B68EEBF\] {
     background-color: #7B68EEBF;
   }
-  .bg-\[\#7B68EE\] {
-    background-color: #7B68EE;
-  }
-  .bg-\[\#7FFF00BF\] {
-    background-color: #7FFF00BF;
-  }
-  .bg-\[\#7FFF00\] {
-    background-color: #7FFF00;
-  }
   .bg-\[\#20B2AABF\] {
     background-color: #20B2AABF;
-  }
-  .bg-\[\#20B2AA\] {
-    background-color: #20B2AA;
   }
   .bg-\[\#2E8B57BF\] {
     background-color: #2E8B57BF;
   }
-  .bg-\[\#2E8B57\] {
-    background-color: #2E8B57;
+  .bg-\[\#7FFF00BF\] {
+    background-color: #7FFF00BF;
   }
   .bg-\[\#32CD32BF\] {
     background-color: #32CD32BF;
   }
-  .bg-\[\#32CD32\] {
-    background-color: #32CD32;
-  }
   .bg-\[\#40E0D0BF\] {
     background-color: #40E0D0BF;
-  }
-  .bg-\[\#40E0D0\] {
-    background-color: #40E0D0;
   }
   .bg-\[\#87CEEBBF\] {
     background-color: #87CEEBBF;
   }
-  .bg-\[\#87CEEB\] {
-    background-color: #87CEEB;
-  }
   .bg-\[\#4169E1BF\] {
     background-color: #4169E1BF;
-  }
-  .bg-\[\#4169E1\] {
-    background-color: #4169E1;
-  }
-  .bg-\[\#4B0082BF\] {
-    background-color: #4B0082BF;
   }
   .bg-\[\#6495EDBF\] {
     background-color: #6495EDBF;
   }
-  .bg-\[\#6495ED\] {
-    background-color: #6495ED;
-  }
   .bg-\[\#A0522DBF\] {
     background-color: #A0522DBF;
-  }
-  .bg-\[\#A0522D\] {
-    background-color: #A0522D;
   }
   .bg-\[\#C71585BF\] {
     background-color: #C71585BF;
   }
-  .bg-\[\#C71585\] {
-    background-color: #C71585;
-  }
   .bg-\[\#CD5C5CBF\] {
     background-color: #CD5C5CBF;
-  }
-  .bg-\[\#CD5C5C\] {
-    background-color: #CD5C5C;
   }
   .bg-\[\#D2691EBF\] {
     background-color: #D2691EBF;
   }
-  .bg-\[\#D2691E\] {
-    background-color: #D2691E;
-  }
   .bg-\[\#DAA520BF\] {
     background-color: #DAA520BF;
-  }
-  .bg-\[\#DAA520\] {
-    background-color: #DAA520;
   }
   .bg-\[\#DB7093BF\] {
     background-color: #DB7093BF;
   }
-  .bg-\[\#DB7093\] {
-    background-color: #DB7093;
-  }
   .bg-\[\#DC143CBF\] {
     background-color: #DC143CBF;
-  }
-  .bg-\[\#DC143C\] {
-    background-color: #DC143C;
   }
   .bg-\[\#EE82EEBF\] {
     background-color: #EE82EEBF;
   }
-  .bg-\[\#EE82EE\] {
-    background-color: #EE82EE;
-  }
   .bg-\[\#F0E68CBF\] {
     background-color: #F0E68CBF;
-  }
-  .bg-\[\#F0E68C\] {
-    background-color: #F0E68C;
   }
   .bg-\[\#F4A460BF\] {
     background-color: #F4A460BF;
   }
-  .bg-\[\#F4A460\] {
-    background-color: #F4A460;
-  }
   .bg-\[\#F5DEB3BF\] {
     background-color: #F5DEB3BF;
-  }
-  .bg-\[\#F5DEB3\] {
-    background-color: #F5DEB3;
   }
   .bg-\[\#FA8072BF\] {
     background-color: #FA8072BF;
   }
-  .bg-\[\#FA8072\] {
-    background-color: #FA8072;
-  }
   .bg-\[\#FF0000BF\] {
     background-color: #FF0000BF;
-  }
-  .bg-\[\#FF0000\] {
-    background-color: #FF0000;
   }
   .bg-\[\#FF00FFBF\] {
     background-color: #FF00FFBF;
   }
-  .bg-\[\#FF00FF\] {
-    background-color: #FF00FF;
-  }
   .bg-\[\#FF7F50BF\] {
     background-color: #FF7F50BF;
-  }
-  .bg-\[\#FF7F50\] {
-    background-color: #FF7F50;
   }
   .bg-\[\#FF8C00BF\] {
     background-color: #FF8C00BF;
   }
-  .bg-\[\#FF8C00\] {
-    background-color: #FF8C00;
-  }
   .bg-\[\#FF69B4BF\] {
     background-color: #FF69B4BF;
-  }
-  .bg-\[\#FF69B4\] {
-    background-color: #FF69B4;
   }
   .bg-\[\#FF1493BF\] {
     background-color: #FF1493BF;
   }
-  .bg-\[\#FF1493\] {
-    background-color: #FF1493;
-  }
   .bg-\[\#FF4500BF\] {
     background-color: #FF4500BF;
-  }
-  .bg-\[\#FF4500\] {
-    background-color: #FF4500;
   }
   .bg-\[\#FF6347BF\] {
     background-color: #FF6347BF;
   }
-  .bg-\[\#FF6347\] {
-    background-color: #FF6347;
-  }
   .bg-\[\#FFA500BF\] {
     background-color: #FFA500BF;
   }
-  .bg-\[\#FFA500\] {
-    background-color: #FFA500;
-  }
   .bg-\[\#FFFF00BF\] {
     background-color: #FFFF00BF;
-  }
-  .bg-\[\#FFFF00\] {
-    background-color: #FFFF00;
   }
   .bg-\[\$\{colors\[i\]\}BF\] {
     background-color: ${colors[i]}BF;
@@ -1370,44 +1244,14 @@
       outline-style: none;
     }
   }
-  .sm\:-left-20 {
-    @media (width >= 40rem) {
-      left: calc(var(--spacing) * -20);
-    }
-  }
-  .sm\:-left-24 {
-    @media (width >= 40rem) {
-      left: calc(var(--spacing) * -24);
-    }
-  }
-  .sm\:-left-28 {
-    @media (width >= 40rem) {
-      left: calc(var(--spacing) * -28);
-    }
-  }
   .md\:top-1\/2 {
     @media (width >= 48rem) {
       top: calc(1/2 * 100%);
     }
   }
-  .md\:-left-12 {
-    @media (width >= 48rem) {
-      left: calc(var(--spacing) * -12);
-    }
-  }
   .md\:-left-20 {
     @media (width >= 48rem) {
       left: calc(var(--spacing) * -20);
-    }
-  }
-  .md\:-left-24 {
-    @media (width >= 48rem) {
-      left: calc(var(--spacing) * -24);
-    }
-  }
-  .md\:-left-28 {
-    @media (width >= 48rem) {
-      left: calc(var(--spacing) * -28);
     }
   }
   .md\:size-8 {
@@ -1436,16 +1280,6 @@
     @media (width >= 48rem) {
       font-size: var(--text-xl);
       line-height: var(--tw-leading, var(--text-xl--line-height));
-    }
-  }
-  .lg\:-left-24 {
-    @media (width >= 64rem) {
-      left: calc(var(--spacing) * -24);
-    }
-  }
-  .lg\:-left-28 {
-    @media (width >= 64rem) {
-      left: calc(var(--spacing) * -28);
     }
   }
 }

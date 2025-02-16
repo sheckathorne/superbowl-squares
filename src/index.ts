@@ -25,6 +25,7 @@ initializeTeamsForm();
 
 function initializeGame() {
   if (gameHasStarted()) {
+    clearGrid();
     initGrid();
     activateSection('game-board-parent');
   } else if (playersExist() || teamsSelected()) {
@@ -43,6 +44,16 @@ function initializeGame() {
     setNextButtonAction();
     initializeData();
   }
+}
+
+function clearGrid(): void {
+  const grid = document.querySelector('.superbowl-grid') as HTMLElement;
+  const button = document.getElementById('reset-game-button') as HTMLElement;
+  const playersList = document.getElementById('players-list') as HTMLElement;
+  debugger;
+  grid.innerHTML = '';
+  playersList.innerHTML = '';
+  button.remove();
 }
 
 function initTeamSelect(): void {
@@ -522,24 +533,29 @@ function initGrid(): void {
 
   setTeamNamesOnGrid();
   createPlayersTable(playersData, 'game-board-player-list', true);
-  createResetButton(grid);
+  createResetButton();
 }
 
-function createResetButton(grid: HTMLElement): void {
+function createResetButton(): void {
+  const parentElement = document.getElementById(
+    'game-board-white-square',
+  ) as HTMLElement;
   const button = document.createElement('button');
   const buttonClasses =
     'peer px-6 py-3 text-white text-lg font-bold bg-red-500 rounded-lg hover:bg-red-600 transition-colors duration-200 shadow-lg cursor-pointer';
 
   button.classList.add(...buttonClasses.split(' '));
   button.textContent = 'Reset Game';
+  button.id = 'reset-game-button';
   button.addEventListener('click', function () {
     resetGame();
   });
-  grid.appendChild(button);
+  parentElement.appendChild(button);
 }
 
 function resetGame() {
   localStorage.clear();
+  clearGrid();
   initializeGame();
 }
 
