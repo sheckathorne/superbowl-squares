@@ -560,9 +560,6 @@
   .top-1\/2 {
     top: calc(1/2 * 100%);
   }
-  .top-1\/3 {
-    top: calc(1/3 * 100%);
-  }
   .top-2 {
     top: calc(var(--spacing) * 2);
   }
@@ -589,6 +586,12 @@
   }
   .-left-18 {
     left: calc(var(--spacing) * -18);
+  }
+  .-left-24 {
+    left: calc(var(--spacing) * -24);
+  }
+  .-left-28 {
+    left: calc(var(--spacing) * -28);
   }
   .left-0 {
     left: calc(var(--spacing) * 0);
@@ -659,14 +662,8 @@
   .block {
     display: block;
   }
-  .block\! {
-    display: block !important;
-  }
   .contents {
     display: contents;
-  }
-  .contents\! {
-    display: contents !important;
   }
   .flex {
     display: flex;
@@ -1131,6 +1128,9 @@
   .bg-green-500 {
     background-color: var(--color-green-500);
   }
+  .bg-red-500 {
+    background-color: var(--color-red-500);
+  }
   .bg-red-600 {
     background-color: var(--color-red-600);
   }
@@ -1322,6 +1322,13 @@
       }
     }
   }
+  .hover\:bg-red-600 {
+    &:hover {
+      @media (hover: hover) {
+        background-color: var(--color-red-600);
+      }
+    }
+  }
   .hover\:bg-red-700 {
     &:hover {
       @media (hover: hover) {
@@ -1363,14 +1370,24 @@
       outline-style: none;
     }
   }
+  .sm\:-left-20 {
+    @media (width >= 40rem) {
+      left: calc(var(--spacing) * -20);
+    }
+  }
+  .sm\:-left-24 {
+    @media (width >= 40rem) {
+      left: calc(var(--spacing) * -24);
+    }
+  }
+  .sm\:-left-28 {
+    @media (width >= 40rem) {
+      left: calc(var(--spacing) * -28);
+    }
+  }
   .md\:top-1\/2 {
     @media (width >= 48rem) {
       top: calc(1/2 * 100%);
-    }
-  }
-  .md\:-left-8 {
-    @media (width >= 48rem) {
-      left: calc(var(--spacing) * -8);
     }
   }
   .md\:-left-12 {
@@ -1386,6 +1403,11 @@
   .md\:-left-24 {
     @media (width >= 48rem) {
       left: calc(var(--spacing) * -24);
+    }
+  }
+  .md\:-left-28 {
+    @media (width >= 48rem) {
+      left: calc(var(--spacing) * -28);
     }
   }
   .md\:size-8 {
@@ -1414,6 +1436,16 @@
     @media (width >= 48rem) {
       font-size: var(--text-xl);
       line-height: var(--tw-leading, var(--text-xl--line-height));
+    }
+  }
+  .lg\:-left-24 {
+    @media (width >= 64rem) {
+      left: calc(var(--spacing) * -24);
+    }
+  }
+  .lg\:-left-28 {
+    @media (width >= 64rem) {
+      left: calc(var(--spacing) * -28);
     }
   }
 }

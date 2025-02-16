@@ -522,6 +522,25 @@ function initGrid(): void {
 
   setTeamNamesOnGrid();
   createPlayersTable(playersData, 'game-board-player-list', true);
+  createResetButton(grid);
+}
+
+function createResetButton(grid: HTMLElement): void {
+  const button = document.createElement('button');
+  const buttonClasses =
+    'peer px-6 py-3 text-white text-lg font-bold bg-red-500 rounded-lg hover:bg-red-600 transition-colors duration-200 shadow-lg cursor-pointer';
+
+  button.classList.add(...buttonClasses.split(' '));
+  button.textContent = 'Reset Game';
+  button.addEventListener('click', function () {
+    resetGame();
+  });
+  grid.appendChild(button);
+}
+
+function resetGame() {
+  localStorage.clear();
+  initializeGame();
 }
 
 function setTeamNamesOnGrid(): void {
