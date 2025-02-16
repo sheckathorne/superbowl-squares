@@ -277,7 +277,7 @@ function createPlayersTable(
       "bg-red-600",
       "text-white",
       "text-xs",
-      "cursor-pointer"
+      "cursor-pointer",
       "rounded-md",
       "hover:bg-red-700",
       "focus:outline-none",
