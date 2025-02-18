@@ -1,5 +1,5 @@
-import { colors } from './colors.js';
-import { nflTeams } from './teams.js';
+import { colors } from './data.js';
+import { nflTeams } from './data.js';
 initializeGame();
 initializeNewPlayerForm();
 initializeTeamsForm();
@@ -21,7 +21,6 @@ function initializeGame() {
     else {
         activateSection('welcome-box');
         setStartButtonAction();
-        setNextButtonAction();
         initializeData();
     }
 }
@@ -84,12 +83,6 @@ function setStartButtonAction() {
     const startButton = document.getElementById('start-button');
     startButton.addEventListener('click', function () {
         activateSection('add-teams-parent');
-    });
-}
-function setNextButtonAction() {
-    const nextButton = document.getElementById('next-button');
-    nextButton.addEventListener('click', function () {
-        activateSection('add-player-parent');
     });
 }
 function activateSection(sectionId) {
@@ -451,7 +444,7 @@ function resetPlayerInputForm(form) {
     playerName.focus();
 }
 function initializeNewPlayerForm() {
-    const form = document.querySelector('#add-player-form');
+    const form = document.getElementById('add-player-form');
     form.addEventListener('submit', (e) => {
         e.preventDefault();
         const formData = new FormData(form);
@@ -474,7 +467,6 @@ function initializeTeamsForm() {
         const teams = getTeams();
         const sides = ['home', 'away'];
         initTeamSelect();
-        setNextButtonAction();
         sides.forEach((side) => {
             const teamSelect = form.elements.namedItem(`${side}-team`);
             teamSelect.value =
@@ -483,6 +475,16 @@ function initializeTeamsForm() {
     }
     form.addEventListener('submit', (e) => {
         e.preventDefault();
+        const homeTeam = form.querySelector('#home-team');
+        if (homeTeam.value.length === 0) {
+            homeTeam.reportValidity();
+            return;
+        }
+        const awayTeam = form.querySelector('#away-team');
+        if (awayTeam.value.length === 0) {
+            awayTeam.reportValidity();
+            return;
+        }
         let teams = [];
         const formData = new FormData(form);
         const selectedTeams = [
@@ -496,6 +498,7 @@ function initializeTeamsForm() {
             }
         });
         setTeams(teams);
+        activateSection('add-player-parent');
     });
 }
 //# sourceMappingURL=index.js.map

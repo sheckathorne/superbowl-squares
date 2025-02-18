@@ -1,5 +1,5 @@
-import { colors } from './colors.js';
-import { nflTeams } from './teams.js';
+import { colors } from './data.js';
+import { nflTeams } from './data.js';
 
 interface Player {
   id: number;
@@ -41,7 +41,6 @@ function initializeGame() {
   } else {
     activateSection('welcome-box');
     setStartButtonAction();
-    setNextButtonAction();
     initializeData();
   }
 }
@@ -122,13 +121,6 @@ function setStartButtonAction(): void {
   const startButton = document.getElementById('start-button') as HTMLElement;
   startButton.addEventListener('click', function () {
     activateSection('add-teams-parent');
-  });
-}
-
-function setNextButtonAction(): void {
-  const nextButton = document.getElementById('next-button') as HTMLElement;
-  nextButton.addEventListener('click', function () {
-    activateSection('add-player-parent');
   });
 }
 
@@ -608,7 +600,7 @@ function resetPlayerInputForm(form: HTMLFormElement): void {
 }
 
 function initializeNewPlayerForm() {
-  const form = document.querySelector('#add-player-form') as HTMLFormElement;
+  const form = document.getElementById('add-player-form') as HTMLFormElement;
   form.addEventListener('submit', (e) => {
     e.preventDefault();
     const formData = new FormData(form);
@@ -634,7 +626,6 @@ function initializeTeamsForm() {
     const teams = getTeams();
     const sides = ['home', 'away'];
     initTeamSelect();
-    setNextButtonAction();
     sides.forEach((side) => {
       const teamSelect = form.elements.namedItem(
         `${side}-team`,
@@ -646,12 +637,26 @@ function initializeTeamsForm() {
 
   form.addEventListener('submit', (e) => {
     e.preventDefault();
+
+    const homeTeam = form.querySelector('#home-team') as HTMLSelectElement;
+    if (homeTeam.value.length === 0) {
+      homeTeam.reportValidity();
+      return;
+    }
+
+    const awayTeam = form.querySelector('#away-team') as HTMLSelectElement;
+    if (awayTeam.value.length === 0) {
+      awayTeam.reportValidity();
+      return;
+    }
+
     let teams: SelectedTeam[] = [];
     const formData = new FormData(form);
     const selectedTeams = [
       { side: 'home', id: String(formData.get('home-team')) || '0' },
       { side: 'away', id: String(formData.get('away-team')) || '0' },
     ];
+
     selectedTeams.forEach((selectedTeam) => {
       const team = nflTeams.find(
         (team) => team.id === parseInt(selectedTeam.id),
@@ -661,5 +666,6 @@ function initializeTeamsForm() {
       }
     });
     setTeams(teams);
+    activateSection('add-player-parent');
   });
 }
