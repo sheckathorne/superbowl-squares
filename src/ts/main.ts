@@ -1,23 +1,5 @@
-import { colors } from './data.js';
-import { nflTeams } from './data.js';
-
-interface Player {
-  id: number;
-  name: string;
-  color: string;
-  squareCount: number;
-  squares: [number, number][];
-}
-
-interface Team {
-  id: number;
-  name: string;
-  logoUrl: string;
-}
-
-interface SelectedTeam extends Team {
-  side: string;
-}
+import { colors, nflTeams } from '../ts/data';
+import type { Player, Team, SelectedTeam } from '../types/types';
 
 initializeGame();
 initializeNewPlayerForm();
@@ -75,11 +57,13 @@ function initTeamSelect(): void {
     el.appendChild(defaultOption);
 
     nflTeams
-      .filter((team) => {
+      .filter((team: Team) => {
         return team.id.toString() !== getOtherElement(el).value;
       })
-      .sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0))
-      .forEach((team) => {
+      .sort((a: Team, b: Team) =>
+        a.name > b.name ? 1 : b.name > a.name ? -1 : 0,
+      )
+      .forEach((team: Team) => {
         const option = document.createElement('option');
         option.value = team.id.toString();
         option.text = team.name;
@@ -329,7 +313,7 @@ function createPlayersTable(
       const sqClasses = 'border-4 border-gray-900';
 
       tableRow.addEventListener('mouseover', function () {
-        player.squares.forEach((square) => {
+        player.squares.forEach((square: [number, number]) => {
           const sq = document.getElementById(
             JSON.stringify(square),
           ) as HTMLElement;
@@ -338,7 +322,7 @@ function createPlayersTable(
       });
 
       tableRow.addEventListener('mouseleave', function () {
-        player.squares.forEach((square) => {
+        player.squares.forEach((square: [number, number]) => {
           const sq = document.getElementById(
             JSON.stringify(square),
           ) as HTMLElement;
@@ -659,7 +643,7 @@ function initializeTeamsForm() {
 
     selectedTeams.forEach((selectedTeam) => {
       const team = nflTeams.find(
-        (team) => team.id === parseInt(selectedTeam.id),
+        (team: Team) => team.id === parseInt(selectedTeam.id),
       );
       if (team) {
         teams.push({ ...team, side: selectedTeam.side });

@@ -1,5 +1,4 @@
-import { colors } from './data.js';
-import { nflTeams } from './data.js';
+import { colors, nflTeams } from '../ts/data';
 initializeGame();
 initializeNewPlayerForm();
 initializeTeamsForm();
@@ -51,7 +50,7 @@ function initTeamSelect() {
             .filter((team) => {
             return team.id.toString() !== getOtherElement(el).value;
         })
-            .sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0))
+            .sort((a, b) => a.name > b.name ? 1 : b.name > a.name ? -1 : 0)
             .forEach((team) => {
             const option = document.createElement('option');
             option.value = team.id.toString();
@@ -501,4 +500,4 @@ function initializeTeamsForm() {
         activateSection('add-player-parent');
     });
 }
-//# sourceMappingURL=index.js.map
+//# sourceMappingURL=main.js.map

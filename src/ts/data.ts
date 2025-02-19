@@ -1,4 +1,6 @@
-export const colors = [
+import { Team } from '../types/types.js';
+
+export const colors: string[] = [
   '#FF0000',
   '#00FF00',
   '#0000FF',
@@ -85,7 +87,7 @@ export const colors = [
   '#F4A460',
 ];
 
-export const nflTeams = [
+export const nflTeams: Team[] = [
   {
     id: 1,
     name: 'Arizona Cardinals',

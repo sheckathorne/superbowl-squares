@@ -9,13 +9,28 @@
     "@typescript-eslint/eslint-plugin": "^8.24.0",
     "@typescript-eslint/parser": "^8.24.0",
     "prettier": "^3.5.1",
-    "typescript": "^5.7.3"
+    "typescript": "^5.7.3",
+    "ts-loader": "^9.4.0",
+    "webpack": "^5.88.2",
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^4.15.1",
+    "html-webpack-plugin": "^5.5.3",
+    "mini-css-extract-plugin": "^2.7.6",
+    "css-minimizer-webpack-plugin": "^5.0.1",
+    "css-loader": "^6.8.1",
+    "style-loader": "^3.3.3",
+    "terser-webpack-plugin": "^5.3.9"
   },
   "scripts": {
-    "build": "tsc",
+    "build": "webpack --mode production",
     "watch": "tsc -w",
-    "start": "node dist/index.js",
-    "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx,html}\"",
-    "format:check": "prettier --check \"src/**/*.{js,jsx,ts,tsx,html}\""
-  }
+    "start": "webpack serve --mode development",
+    "start:prod": "node dist/main.js",
+    "clean": "rm -rf js/*",
+    "format": "prettier --write \"ts/**/*.ts\"",
+    "format:check": "prettier --check \"ts/**/*.ts\"",
+    "type-check": "tsc --noEmit",
+    "type-check:watch": "tsc --noEmit --watch"
+  },
+  "homepage": "https://sheckathorne.github.io/superbowl-squares"
 }
