@@ -4,7 +4,7 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - main  # or master, depending on your default branch name
+      - main # or master, depending on your default branch name
 
 # Sets permissions of the GITHUB_TOKEN
 permissions:
@@ -14,7 +14,7 @@ permissions:
 
 # Allow only one concurrent deployment
 concurrency:
-  group: "pages"
+  group: 'pages'
   cancel-in-progress: true
 
 jobs:
@@ -50,6 +50,3 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
-Last edited 1 hour ago
-
-
