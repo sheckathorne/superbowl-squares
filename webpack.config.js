@@ -5,7 +5,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 
-module.exports = (env, argv) => {
+module.exports = (_env, argv) => {
   const isProduction = argv.mode === 'production';
 
   return {
@@ -14,6 +14,7 @@ module.exports = (env, argv) => {
       path: path.resolve(__dirname, 'dist'),
       filename: isProduction ? '[name].[contenthash].js' : '[name].js',
       clean: true,
+      publicPath: '/superbowl-squares/',
     },
     module: {
       rules: [
@@ -45,6 +46,7 @@ module.exports = (env, argv) => {
       new HtmlWebpackPlugin({
         template: './src/index.html',
         minify: isProduction,
+        publicPath: '/superbowl-squares/', // Add this for correct asset linking
       }),
       ...(isProduction
         ? [
