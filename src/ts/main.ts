@@ -32,12 +32,16 @@ function initializeGame() {
 
 function clearGrid(): void {
   const grid = document.querySelector(".superbowl-grid") as HTMLElement;
-  const button = document.getElementById("reset-game-button") as HTMLElement;
+  const button = document.getElementById(
+    "reset-game-button",
+  ) as HTMLButtonElement;
   const playersList = document.getElementById("players-list") as HTMLElement;
   debugger;
   grid.innerHTML = "";
   playersList.innerHTML = "";
-  button.remove();
+  if (button) {
+    button.remove();
+  }
 }
 
 function initTeamSelect(): void {
