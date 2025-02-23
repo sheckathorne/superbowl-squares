@@ -2,9 +2,11 @@ import "../css/input.css";
 import { colors, nflTeams } from "../ts/data";
 import type { Player, Team, SelectedTeam } from "../types/types";
 
-initializeGame();
-initializeNewPlayerForm();
-initializeTeamsForm();
+document.addEventListener("DOMContentLoaded", () => {
+  initializeGame();
+  initializeNewPlayerForm();
+  initializeTeamsForm();
+});
 
 function initializeGame() {
   if (gameHasStarted()) {
