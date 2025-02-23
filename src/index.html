@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Superbowl Squares</title>
+        <link rel="stylesheet" href="css/output.css" />
+    </head>
+    <body class="min-h-screen bg-gray-200">
+        <!-- Welcome Box -->
+        <div
+            id="welcome-box"
+            class="flex flex-col items-center justify-center min-h-screen p-4"
+        >
+            <div
+                class="bg-white rounded-xl shadow-lg p-12 flex flex-col items-center gap-6 mb-4"
+            >
+                <h1 class="text-4xl font-bold text-gray-800">
+                    Superbowl Squares
+                </h1>
+                <button
+                    id="start-button"
+                    class="px-8 py-4 text-white text-xl font-bold bg-green-500 rounded-lg hover:bg-green-600 transition-colors duration-200 shadow-lg cursor-pointer"
+                >
+                    Start
+                </button>
+            </div>
+            <p class="text-center text-gray-500 text-sm">
+                &copy;2025 Heckathorne Industries. All rights reserved.
+            </p>
+        </div>
+        <div id="add-player-parent">
+            <div
+                id="add-player-section"
+                class="flex items-center justify-center min-h-screen"
+            >
+                <div
+                    id="add-player-subsection"
+                    class="w-full max-w-md relative"
+                >
+                    <button
+                        id="back-to-teams"
+                        type="button"
+                        class="absolute cursor-pointer left-2 top-2 text-gray-600 hover:text-gray-800 transition-colors duration-200"
+                    >
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        >
+                            <path d="M19 12H5M12 19l-7-7 7-7" />
+                        </svg>
+                    </button>
+                    <form
+                        id="add-player-form"
+                        class="bg-white rounded-xl shadow-lg p-12 mb-6"
+                    >
+                        <div>
+                            <div class="mb-6">
+                                <label
+                                    class="block text-gray-800 text-lg font-bold mb-3"
+                                    for="player-name"
+                                >
+                                    Player Name
+                                </label>
+                                <input
+                                    class="w-full px-4 py-3 text-gray-700 bg-gray-50 rounded-lg border border-gray-200 focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-colors duration-200 shadow"
+                                    id="player-name"
+                                    name="player-name"
+                                    type="text"
+                                    placeholder="Enter player name"
+                                />
+                            </div>
+                            <div class="mb-6">
+                                <label
+                                    class="block text-gray-800 text-lg font-bold mb-3"
+                                    for="player-name"
+                                >
+                                    Number of Squares
+                                </label>
+                                <input
+                                    class="w-full px-4 py-3 text-gray-700 bg-gray-50 rounded-lg border border-gray-200 focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-colors duration-200 shadow"
+                                    id="square-count"
+                                    name="square-count"
+                                    type="number"
+                                    pattern="\d*"
+                                    max="100"
+                                    min="1"
+                                    placeholder="Enter square count, up to 100"
+                                />
+                            </div>
+                            <div class="flex gap-4">
+                                <button
+                                    type="submit"
+                                    class="px-6 py-3 text-white text-lg font-bold bg-green-500 rounded-lg hover:bg-green-600 transition-colors duration-200 shadow-lg cursor-pointer"
+                                >
+                                    Add
+                                </button>
+                            </div>
+                        </div>
+                        <div id="players-list"></div>
+                    </form>
+                    <p class="text-center text-gray-500 text-sm">
+                        &copy;2025 Heckathorne Industries. All rights reserved.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div id="add-teams-parent">
+            <div
+                id="add-teams-section"
+                class="flex items-center justify-center min-h-screen"
+            >
+                <div id="add-teams-subsection" class="w-full max-w-md">
+                    <form
+                        id="add-teams-form"
+                        class="bg-white rounded-xl shadow-lg p-12 mb-6"
+                    >
+                        <div class="mb-6">
+                            <div class="mb-6">
+                                <label
+                                    class="block text-gray-800 text-lg font-bold mb-3"
+                                    for="home-team"
+                                >
+                                    Home Team
+                                </label>
+                                <select
+                                    class="team-select w-full px-4 py-3 text-gray-700 bg-gray-50 rounded-lg border border-gray-200 focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-colors duration-200 shadow"
+                                    id="home-team"
+                                    name="home-team"
+                                    required
+                                ></select>
+                            </div>
+                            <div class="mb-6">
+                                <label
+                                    class="block text-gray-800 text-lg font-bold mb-3"
+                                    for="away-team"
+                                >
+                                    Away Team
+                                </label>
+                                <select
+                                    class="team-select w-full px-4 py-3 text-gray-700 bg-gray-50 rounded-lg border border-gray-200 focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-colors duration-200 shadow"
+                                    id="away-team"
+                                    name="away-team"
+                                    required
+                                ></select>
+                            </div>
+                            <div class="flex gap-4">
+                                <button
+                                    id="next-button"
+                                    type="submit"
+                                    class="px-6 py-3 text-white text-lg font-bold bg-green-500 rounded-lg hover:bg-green-600 transition-colors duration-200 shadow-lg cursor-pointer"
+                                >
+                                    Next
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                    <p class="text-center text-gray-500 text-sm">
+                        &copy;2025 Heckathorne Industries. All rights reserved.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Game board -->
+        <div id="game-board-parent">
+            <div class="flex items-center justify-center min-h-screen">
+                <div
+                    id="game-board-white-square"
+                    class="bg-white rounded-xl shadow-lg p-12 flex flex-col items-center gap-6"
+                >
+                    <div class="flex flex-col items-center">
+                        <div
+                            id="home-team-label"
+                            class="flex items-center gap-2 md:text-xl text-base font-bold"
+                        >
+                            <img
+                                class="h-8 w-8"
+                                src="https://static.www.nfl.com/image/private/f_auto/league/puhrqgj71gobgdkdo6uq"
+                            />
+                            <div>Eagles</div>
+                        </div>
+                        <div class="flex relative">
+                            <div
+                                id="away-team-label"
+                                class="flex items-center gap-2 absolute -left-28 md:top-1/2 top-2/5 translate-y-[100%] md:text-xl text-base font-bold rotate-[-90deg]"
+                            >
+                                <img
+                                    class="h-8 w-8"
+                                    src="https://static.www.nfl.com/image/private/f_auto/league/ujshjqvmnxce8m4obmvs"
+                                />
+                                <div>Chiefs</div>
+                            </div>
+                            <div
+                                class="superbowl-grid flex flex-col items-center justify-center"
+                            ></div>
+                        </div>
+                        <div id="game-board-player-list" class="my-4"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="bundle.js"></script>
+    </body>
+</html>
